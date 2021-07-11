@@ -2,9 +2,9 @@
 ## Hardware Components
 ### 1. Esp32 - Microcontroller
 - Get analog force from the FSR sensors
-- Publish the FSR sensor data to firebase database
+- Publish the FSR sensor data to firebase database every 500 milliseconds
 
-### 2. Force Sensing Resistors(FSR) sensors
+### 2. Force Sensing Resistors(FSR 402) sensors
 - Read force data from the patient
 
 
