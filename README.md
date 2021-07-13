@@ -17,7 +17,10 @@ You need to connect a 10kΩ pull-down resistor in series with the FSR to create
 - User authentication (login and register)
 - Plot line graphs of individual FSR sensor data from the ESP32 
 
-### 2. Firebase database
+### 2. Web app
+- Plot line graphs of all individual FSR sensors and reps done by the patient for the physiotherapist
+
+### 3. Firebase database
 - Store user credentials for mobile app authentication
 - Store sensor data from the esp32
 #### collections
