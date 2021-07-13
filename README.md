@@ -14,5 +14,7 @@
 - Plot line graphs of individual FSR sensor data from the ESP32 
 
 ### 2. Firebase database
+#### collections
+<img  height="500" src="images/firebase_collection.png">
 - Store user credentials for mobile app authentication
 - Store sensor data from the esp32
