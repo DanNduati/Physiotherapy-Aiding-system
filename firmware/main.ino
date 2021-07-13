@@ -12,7 +12,7 @@ const char* password = "dandandandan";
 const char* api_key = "AIzaSyBDCrjZasI5oLo5yxnuAwQdMdKU4qSc6bE";
 const char* database_url = "https://fsresp32-default-rtdb.firebaseio.com";
 
-String device_location = "FSR1";
+String data_header = "Data";
 // create a firebase data object
 FirebaseData fbdo;
 // Firebase Authentication Object
@@ -30,9 +30,9 @@ bool isAuthenticated = false;
 
 //fsr sensors
 const int fsr_num = 6;
-const byte sensor_ids[fsr_num] = {0x01, 0x02, 0x04, 0x05, 0x06, 0x07}; //sensor ids
+String fsr_sensors[fsr_num] = {"fsr1", "fsr2", "fsr3", "fsr4", "fsr5", "fsr6"};
 int fsrPins[fsr_num] = {36, 39, 34, 35, 32, 33}; //array of fsr sensors
-int forceValues[fsr_num] = {0, 0, 0, 0, 0}; //array of fsr sensor values
+int forceValues[fsr_num] = {0, 0, 0, 0, 0, 0}; //array of fsr sensor values
 
 //intervals
 long lastSendTime = 0;        // last send time
@@ -45,7 +45,7 @@ void setup(void) {
 }
 
 void loop(void) {
-  database_test();
+  sendSensorData();
 }
 void wifiInit() {
   WiFi.begin(ssid, password);
@@ -76,7 +76,7 @@ void firebaseInit() {
     Serial.println("Success");
     isAuthenticated = true;
     // Set the database path where updates will be loaded for this device
-    database_path = "/" + device_location;
+    database_path = "/" + data_header;
     fuid = auth.token.uid.c_str();
   }
   else
@@ -90,6 +90,48 @@ void firebaseInit() {
   Firebase.begin(&config, &auth);
 
 }
+
+void sendSensorData() {
+  // Check that the interval has elapsed before, device is authenticated and the firebase service is ready.
+  if (millis() - lastSendTime > interval && isAuthenticated && Firebase.ready())
+  {
+    lastSendTime = millis();
+    Serial.println("------------------------------------");
+    Serial.println("Set int test...");
+    // Specify the key value for our data and append it to our path
+    String root_node = database_path;
+
+    for (int i = 0; i < fsr_num; i++) {
+      String sensor_node = root_node + "/"+fsr_sensors[i];
+      String node = sensor_node + "/value";
+      //get random force data
+      int fsr = genRandomData();
+      // Send the value our count to the firebase realtime database
+      if (Firebase.set(fbdo, node.c_str(), fsr))
+      {
+        // Print firebase server response
+        Serial.println("PASSED");
+        Serial.println("PATH: " + fbdo.dataPath());
+        Serial.println("TYPE: " + fbdo.dataType());
+        Serial.println("ETag: " + fbdo.ETag());
+        Serial.print("VALUE: ");
+        printResult(fbdo); //see addons/RTDBHelper.h
+        Serial.println("------------------------------------");
+        Serial.println();
+      }
+      else
+      {
+        Serial.println("FAILED");
+        Serial.println("REASON: " + fbdo.errorReason());
+        Serial.println("------------------------------------");
+        Serial.println();
+      }
+    }
+
+
+  }
+}
+
 //function to get fsr sensor data by index
 long getForceValue(int index) {
   long reading = analogRead(index);
@@ -113,41 +155,9 @@ long getForceValue(int index) {
     return force;
   }
 }
-void database_test() {
-  // Check that the interval has elapsed before, device is authenticated and the firebase service is ready.
-  if (millis() - lastSendTime > interval && isAuthenticated && Firebase.ready())
-  {
-    lastSendTime = millis();
-    Serial.println("------------------------------------");
-    Serial.println("Set int test...");
-    // Specify the key value for our data and append it to our path
-    String node = database_path + "/value";
-    // Send the value our count to the firebase realtime database
-    if (Firebase.set(fbdo, node.c_str(), count++))
-    {
-      // Print firebase server response
-      Serial.println("PASSED");
-      Serial.println("PATH: " + fbdo.dataPath());
-      Serial.println("TYPE: " + fbdo.dataType());
-      Serial.println("ETag: " + fbdo.ETag());
-      Serial.print("VALUE: ");
-      printResult(fbdo); //see addons/RTDBHelper.h
-      Serial.println("------------------------------------");
-      Serial.println();
-    }
-    else
-    {
-      Serial.println("FAILED");
-      Serial.println("REASON: " + fbdo.errorReason());
-      Serial.println("------------------------------------");
-      Serial.println();
-    }
-  }
-}
 
-
-
-//function to generate random force data to be sent to firebase as fsr values
-long genRandomData() {
-
+//function to generate random force data to be sent to firebase as fsr values since i dont have the sensors
+int genRandomData() {
+  int force_value = random(1000);
+  return force_value;
 }
