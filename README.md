@@ -18,7 +18,10 @@ You need to connect a 10kΩ pull-down resistor in series with the FSR to create
 - Plot line graphs of individual FSR sensor data from the ESP32 
 
 ### 2. Firebase database
-#### collections
-<img  height="500" src="images/firebase_collection.png"></img>
 - Store user credentials for mobile app authentication
 - Store sensor data from the esp32
+#### collections
+##### 1. Sensor collection - For the sensor data
+<img  height="500" src="images/firebase_collection.png"></img>
+##### 2. User collection - For Authentication
+
