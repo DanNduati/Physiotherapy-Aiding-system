@@ -1,18 +1,18 @@
 CREATE TABLE patients (
-    patients_fname VARCHAR(100),
-	patients_lname VARCHAR(100),
-	patients_id INT PRIMARY KEY
-);
+    id INT NOT NULL,
+	patients_fname VARCHAR(50) NOT NULL,
+	patients_lname VARCHAR(50) NOT NULL,
+    PRIMARY KEY (id)
+) ENGINE=INNODB;
 
 CREATE TABLE readings(
-	reading_id INT AUTO_INCREMENT PRIMARY KEY,
-	reading INT,
-	patients_id INT	FOREIGN KEY REFERENCES patients(patients_id),
-	date_time DATETIME DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE reps(
-	rep_id INT AUTO_INCREMENT PRIMARY KEY,
-	rep INT,
-	patients_id INT FOREIGN KEY REFERENCES patients(patients_id)
-);
+    id INT AUTO_INCREMENT PRIMARY KEY,
+	reading INT NOT NULL,
+	reps INT,
+	date_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    patients_id INT NOT NULL,
+    INDEX par_ind (patients_id),
+    FOREIGN KEY (patients_id)
+        REFERENCES patients(id)
+        ON DELETE CASCADE
+) ENGINE=INNODB;
