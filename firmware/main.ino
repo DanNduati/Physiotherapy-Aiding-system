@@ -1,4 +1,5 @@
 #include <WiFi.h>
+#include <HTTPClient.h>
 #include <FirebaseESP32.h>
 #include "addons/TokenHelper.h"
 #include "addons/RTDBHelper.h"
@@ -6,13 +7,15 @@
 //wifi credentials
 const char* ssid  = "dan";
 const char* password = "dandandandan";
+//server url
+const char* server = "http://f4fb95ab2f60.ngrok.io/addboardData.php?";
 
 //firebase
 //api credentials
 const char* api_key = "AIzaSyBDCrjZasI5oLo5yxnuAwQdMdKU4qSc6bE";
 const char* database_url = "https://fsresp32-default-rtdb.firebaseio.com";
 
-String data_header = "Data";
+String data_header = "sensorData";
 // create a firebase data object
 FirebaseData fbdo;
 // Firebase Authentication Object
@@ -45,7 +48,12 @@ void setup(void) {
 }
 
 void loop(void) {
-  sendSensorData();
+  if (millis() - lastSendTime > interval && isAuthenticated && Firebase.ready())
+  {
+    lastSendTime = millis();
+    //sendToFirebase();
+    sendToServer("1111",genRandomData());
+  }
 }
 void wifiInit() {
   WiFi.begin(ssid, password);
@@ -59,6 +67,12 @@ void wifiInit() {
   Serial.println(WiFi.localIP());
   Serial.println();
 
+}
+
+void getConfigs(void *ptr) {
+  const char * firebase_url = "https://fsresp32-default-rtdb.firebaseio.com/";
+  const char * firebase_api_key = "AIzaSyBDCrjZasI5oLo5yxnuAwQdMdKU4qSc6bE";
+  const char * firebase_token = "pDsxpJsu33UWMM5gkxe3hQjacAAbvPvt3fDofYRa";
 }
 
 void firebaseInit() {
@@ -91,50 +105,56 @@ void firebaseInit() {
 
 }
 
-void sendSensorData() {
+void sendToServer(String patient_id,int forceval) {
+  HTTPClient http;
+  http.begin(server);
+  http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+  //prepare the post data
+  String httpRequestData = "patientid=" + patient_id + "&reading=" + String(forceval)+"";
+  //post data to the server
+  int httpResponseCode = http.POST(httpRequestData);
+  Serial.println(httpResponseCode);
+  // Free http resource
+  http.end();
+}
+void sendToFirebase() {
   // Check that the interval has elapsed before, device is authenticated and the firebase service is ready.
-  if (millis() - lastSendTime > interval && isAuthenticated && Firebase.ready())
-  {
-    lastSendTime = millis();
-    Serial.println("------------------------------------");
-    Serial.println("Set int test...");
-    // Specify the key value for our data and append it to our path
-    String root_node = database_path;
+  Serial.println("------------------------------------");
+  Serial.println("Sending Sensor data to firebase");
+  // Specify the key value for our data and append it to our path
+  String root_node = database_path;
 
-    for (int i = 0; i < fsr_num; i++) {
-      String sensor_node = root_node + "/"+fsr_sensors[i];
-      String node = sensor_node + "/value";
-      //get random force data
-      int fsr = genRandomData();
-      // Send the value our count to the firebase realtime database
-      if (Firebase.set(fbdo, node.c_str(), fsr))
-      {
-        // Print firebase server response
-        Serial.println("PASSED");
-        Serial.println("PATH: " + fbdo.dataPath());
-        Serial.println("TYPE: " + fbdo.dataType());
-        Serial.println("ETag: " + fbdo.ETag());
-        Serial.print("VALUE: ");
-        printResult(fbdo); //see addons/RTDBHelper.h
-        Serial.println("------------------------------------");
-        Serial.println();
-      }
-      else
-      {
-        Serial.println("FAILED");
-        Serial.println("REASON: " + fbdo.errorReason());
-        Serial.println("------------------------------------");
-        Serial.println();
-      }
+  for (int i = 0; i < fsr_num; i++) {
+    String sensor_node = root_node + "/" + fsr_sensors[i];
+    String node = sensor_node + "/value";
+    //get random force data
+    int fsr = genRandomData();
+    // Send the value our count to the firebase realtime database
+    if (Firebase.set(fbdo, node.c_str(), fsr))
+    {
+      // Print firebase server response
+      Serial.println("PASSED");
+      Serial.println("PATH: " + fbdo.dataPath());
+      Serial.println("TYPE: " + fbdo.dataType());
+      Serial.println("ETag: " + fbdo.ETag());
+      Serial.print("VALUE: ");
+      printResult(fbdo); //see addons/RTDBHelper.h
+      Serial.println("------------------------------------");
+      Serial.println();
     }
-
-
+    else
+    {
+      Serial.println("FAILED");
+      Serial.println("REASON: " + fbdo.errorReason());
+      Serial.println("------------------------------------");
+      Serial.println();
+    }
   }
 }
 
 //function to get fsr sensor data by index
 long getForceValue(int index) {
-  long reading = analogRead(index);
+  long reading = analogRead(fsrPins[index]);
   //get the voltage in mv
   long voltage = map(reading, 0, 4095, 0, 3300);
   if (voltage > 0) {
