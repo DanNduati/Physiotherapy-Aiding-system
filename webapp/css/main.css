@@ -48,3 +48,12 @@ body {
     margin-top: 10px;
     text-align: center;
 }
+
+#prev_records{
+    margin-top: 50px;
+}
+
+#prev_records h2{
+    font-weight: 5px;
+    text-align: center;
+}

@@ -7,8 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FSREsp32</title>
     <link rel="stylesheet" type="text/css" href="./css/main.css">
+    <!--include popper js before bootstrap-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/cjs/popper-base.min.js" integrity="sha512-o0ub2Xb68yocD2zlJF3T68IBMS6Tcci0ELYFMSZg22LpCZ9/zceGsjt9k7sH/HZbqCAzwewcXCzyOcjfIG21Ow==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- BOOTSTRAP CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
@@ -27,6 +31,16 @@
             <h1>FSREsp32 Webapp</h1>
         </div>
     </section>
+    <section id="select_patients">
+        <div class="container">
+            <select class="form-select" aria-label="Default select example">
+              <option selected>Select patient data you want to view</option>
+              <option value="1"><a href="pages/patient1.html">One</a></option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+        </div>        
+    </section>
     <!--
     <section id="patients">
         <div class="container">
@@ -43,28 +57,30 @@
         
     </section>
     -->
+    <!--
     <section id="graph">
         <div class="container">
             <h2>Patient 1 data</h2>
             <p>Reps Completed: <span id="reps1">0</span></p>
             <canvas id="sensor1" width="200" height="200"></canvas>
             <h2>Patient 2 data</h2>
-            <p>Reps Completed: <span id="reps1">0</span></p>
+            <p>Reps Completed: <span id="reps2">0</span></p>
             <canvas id="sensor2" width="200" height="200"></canvas>
             <h2>Patient 3 data</h2>
-            <p>Reps Completed: <span id="reps1">0</span></p>
+            <p>Reps Completed: <span id="reps3">0</span></p>
             <canvas id="sensor3" width="200" height="200"></canvas>
             <h2>Patient 4 data</h2>
-            <p>Reps Completed: <span id="reps1">0</span></p>
+            <p>Reps Completed: <span id="reps4">0</span></p>
             <canvas id="sensor4" width="200" height="200"></canvas>
             <h2>Patient 5 data</h2>
-            <p>Reps Completed: <span id="reps1">0</span></p>
+            <p>Reps Completed: <span id="reps5">0</span></p>
             <canvas id="sensor5" width="200" height="200"></canvas>
             <h2>Patient 6 data</h2>
-            <p>Reps Completed: <span id="reps1">0</span></p>
+            <p>Reps Completed: <span id="reps6">0</span></p>
             <canvas id="sensor6" width="200" height="200"></canvas>
         </div>        
     </section>
+    -->
     <script  src="js/index.js"></script>
 
 </body>
