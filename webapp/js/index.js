@@ -56,8 +56,9 @@
             //combined graph this is a shitty implementation
             var element = 'combo';
           }
-          
+          if (document.body.contains(document.getElementById(element))){
           var ctx = document.getElementById(element).getContext('2d');
+
           var lineChart = new Chart(ctx, {
             type: 'line',
             data: {
@@ -65,7 +66,9 @@
               datasets: [
                 {
                   label: "Force",
-                  data: []//[10,8,6,5,12,8,16,17,6,7,6,10]
+                  data: [],//[10,8,6,5,12,8,16,17,6,7,6,10]
+                  borderColor: '#051E34',
+                  tension: 0.1
                 }
               ]
             }
@@ -78,42 +81,32 @@
           
           //add the value to its corresponding sensor array 
           sensors[index].push(value);
-          console.log(sensors[index]);
+          //console.log(sensors[index]);
           
           updateChart(lineChart,sensors[index].length,sensors[index][sensors[index].length -1]);
           //check if length of array is reached
           //detach listener
           //document.getElementById('sensor1value').innerHTML = snapshot.val();
-        });
+        });}
         }
 
         function getRepData(index){
-          var sensorVal= firebase.database().ref('RepsData/reps'+index+'/value');
-          sensorVal.on('value',function(snapshot){
+          var repVal= firebase.database().ref('RepsData/reps'+index+'/value');
+          repVal.on('value',function(snapshot){
           //sensor1.push(snapshot.val());
           //console.log(snapshot.val());
           value = snapshot.val();
           
           //add the value to its corresponding sensor array 
-          sensors[index].push(value);
-          console.log(sensors[index]);
-          plotChart(index);
+          reps[index] = value;
+          //dom manipulation
+          var element = "reps"+index; 
+          var rep_ctx = document.getElementById(element).innerHTML=reps[index];
+          console.log(reps[index]);
         });
         }
         
-        //getSensorData(0);
-        getSensorData(1);
-        getSensorData(2);
-        getSensorData(3);
-        getSensorData(4);
-        getSensorData(5);
-        getSensorData(6);
-        //getSensorData(7);
-
-        //plotChart(1);
-        /*plotChart(2);
-        plotChart(3);
-        plotChart(4);
-        plotChart(5);
-        plotChart(6);
-        plotChart(7); */
+        for (let i =1; i<=6; i++){
+          getRepData(i);
+          getSensorData(i);
+        }
