@@ -19,15 +19,14 @@ function sanitize($data) {
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $patient_id = sanitize($_GET["patientid"]);
     $fname = sanitize($_GET["fname"]);
-    $sql = "SELECT * FROM patients WHERE patients_id='$patient_id' AND patients_fname=$fname";
-    $result = $conn->query($sql);
+    $sql = "DELETE FROM patients WHERE patients_id='$patient_id' AND patients_fname=$fname";
     //echo $sql;
-    if ($result->num_rows > 0)
+    if ($conn->query($sql) === TRUE)
      {
-        echo "log in ok";
+        echo "User deleted successfully";
      }
      else {
-         echo "Log in Error";
+         echo "Error could not delete the user";
      }
 }
  mysqli_close($conn);

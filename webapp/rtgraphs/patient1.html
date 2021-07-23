@@ -21,61 +21,14 @@
 </head>
 
 <body>
-    <section id="heading">
-        <div class="container">
-            <!--<h1> Welcome Physiotherapist</h1>-->
-            <h1>FSREsp32 Webapp</h1>
-        </div>
-    </section>
     <section id="graph">
         <div class="container">
             <h2>Patient 1 data</h2>
-            <p>Reps Completed: <span id="reps1">0</span></p>
+            <p>Real Time Graph</p>
             <canvas id="sensor1" width="200" height="200"></canvas>
         </div>        
     </section>
     <section id="prev_records">
-        <!--table showing the previous records of patients-->
-        <div class="container">
-            <h2>Previous Records</h2>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">DateTime</th>
-                  <th scope="col">Weight</th>
-                  <th scope="col">Repetitions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>14/07/2021</td>
-                  <td>2</td>
-                  <td>30</td>
-                </tr>
-                <tr>
-                  <td>15/07/2021</td>
-                  <td>10</td>
-                  <td>15</td>
-                </tr>
-                <tr>
-                  <td>16/07/2021</td>
-                  <td>20</td>
-                  <td>5</td>
-                </tr>
-                <tr>
-                  <td>16/07/2021</td>
-                  <td>20</td>
-                  <td>5</td>
-                </tr>
-                <tr>
-                  <td>16/07/2021</td>
-                  <td>20</td>
-                  <td>4</td>
-                </tr>
-              </tbody>
-            </table>
-        </div>
-    </section>
     <script  src="../js/index.js">
         getSensorData(1);
     </script>

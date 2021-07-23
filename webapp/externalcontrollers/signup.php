@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $patient_id = sanitize($_GET["patientid"]);
     $fname = sanitize($_GET["fname"]);
     $sname = sanitize($_GET["sname"]);
-    $sql = "INSERT INTO patients (id,patients_fname,patients_lname) VALUES('$patient_id',$fname,$sname)";
+    $sql = "INSERT INTO patients (patients_id,patients_fname,patients_lname) VALUES('$patient_id',$fname,$sname)";
     //echo $sql;
     if ($conn->query($sql) === TRUE)
      {

@@ -21,21 +21,16 @@
 </head>
 
 <body>
-    <section id="heading">
-        <div class="container">
-            <!--<h1> Welcome Physiotherapist</h1>-->
-            <h1>FSREsp32 Webapp</h1>
-        </div>
-    </section>
     <section id="graph">
         <div class="container">
-            <h2>Patient 4 data</h2>
-            <p>Reps Completed: <span id="reps4">0</span></p>
-            <canvas id="sensor4" width="200" height="200"></canvas>
+            <h2>Patient 3 data</h2>
+            <p>Real Time Graph</p>
+            <canvas id="sensor1" width="200" height="200"></canvas>
         </div>        
     </section>
+    <section id="prev_records">
     <script  src="../js/index.js">
-        //getSensorData(1);
+        getSensorData(3);
     </script>
 
 </body>

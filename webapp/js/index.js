@@ -106,7 +106,41 @@
         });
         }
         
+
+        function drawRepGraph(page){
+          $.post("../pages/data.php",{index:page},
+          function (data)
+          {
+              console.log(data);
+              var weights = [];
+              var reps = [];
+              for (var i in data) {
+                  weights.push(data[i].weight);
+                  reps.push(data[i].reps);
+              }
+
+              var chartdata = {
+                  labels: weights,
+                  datasets: [
+                      {
+                          label: 'reps',
+                          backgroundColor: '#051E34',
+                          borderColor: '#051E34',
+                          hoverBackgroundColor: '#051E34',
+                          hoverBorderColor: '#051E34',
+                          tension: 0.1,
+                          data: reps
+                      }
+                  ]
+              };
+              var graphTarget = $("#graph1");
+              var myLineChart = new Chart(graphTarget, {
+                  type: 'line',
+                  data: chartdata
+              });
+          });
+        }
         for (let i =1; i<=6; i++){
-          getRepData(i);
+          //getRepData(i);
           getSensorData(i);
         }

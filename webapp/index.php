@@ -31,32 +31,47 @@
             <h1>FSREsp32 Webapp</h1>
         </div>
     </section>
-    <section id="select_patients">
-        <div class="container">
-            <select class="form-select" aria-label="Default select example">
-              <option selected>Select patient data you want to view</option>
-              <option value="1"><a href="pages/patient1.html">One</a></option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
-        </div>        
-    </section>
-    <!--
+
     <section id="patients">
         <div class="container">
             <h2>Please select the data you want to view</h2>
-            
+            <!--
             <button type="button" class="btn btn-primary btn-lg btn-block">Patient1</button>
             <button type="button" class="btn btn-primary btn-lg btn-block">Patient2</button>
             <button type="button" class="btn btn-primary btn-lg btn-block">Patient3</button>
             <button type="button" class="btn btn-primary btn-lg btn-block">Patient4</button>
             <button type="button" class="btn btn-primary btn-lg btn-block">Patient5</button>
             <button type="button" class="btn btn-primary btn-lg btn-block">Patient6</button>
-            <button type="button" class="btn btn-primary btn-lg btn-block">Combined</button>
+        -->
+        <?php
+            $servername = "localhost";
+            $username = "root";
+            $password = "12345678";
+            $dbname = "fsresp32";
+
+            // Create connection
+            $conn = new mysqli($servername, $username, $password, $dbname);
+            if ($conn->connect_error) {
+              die("Connection failed: " . $conn->connect_error);
+            }
+            $sql = "SELECT patients_id,patients_fname,patients_lname FROM patients ORDER BY id ASC";
+            if ($result = $conn->query($sql)) {
+                $i =1;
+                while ($row = $result->fetch_assoc()) {
+                    $row_id = $row["patients_id"];
+                    $row_fname = $row["patients_fname"];
+                    $row_lname = $row["patients_lname"];
+                    echo '<button id= "button' . htmlspecialchars($i).'" type="button" class="btn btn-primary btn-lg btn-block">'.$row_fname." ".$row_lname." id: ".$row_id.'</button>';
+                    $i++;
+                }
+                $result->free();
+            }
+            $conn->close();
+        ?>
         </div>
         
     </section>
-    -->
+
     <!--
     <section id="graph">
         <div class="container">
@@ -81,7 +96,36 @@
         </div>        
     </section>
     -->
-    <script  src="js/index.js"></script>
+    <footer>
+    <div class="container">
+        <p>Fsr-esp32 </p>
+    </div>  
+</footer>
+    <script  src="js/index.js">
+    </script>
+    <script type="text/javascript">
+        if (document.body.contains(document.getElementById("button1"))){
+            document.getElementById("button1").onclick = function () {
+            location.href = "pages/patient1.php";};
+        }
+        if (document.body.contains(document.getElementById("button2"))){
+            document.getElementById("button2").onclick = function () {
+            location.href = "pages/patient2.php";};
+        }
+        if (document.body.contains(document.getElementById("button3"))){
+            document.getElementById("button3").onclick = function () {
+            location.href = "pages/patient3.php";};
+        }
+        if (document.body.contains(document.getElementById("button4"))){
+            document.getElementById("button4").onclick = function () {
+            location.href = "pages/patient4.php";};
+        }
+        if (document.body.contains(document.getElementById("button5"))){
+            document.getElementById("button5").onclick = function () {
+            location.href = "pages/patient1.php";};
+        }
+             
+    </script>
 
 </body>
 

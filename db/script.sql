@@ -1,18 +1,24 @@
 CREATE TABLE patients (
-    id INT NOT NULL,
+    id INT AUTO_INCREMENT,
 	patients_fname VARCHAR(50) NOT NULL,
 	patients_lname VARCHAR(50) NOT NULL,
+    patients_id VARCHAR(9) NOT NULL UNIQUE,
     PRIMARY KEY (id)
 ) ENGINE=INNODB;
 
 CREATE TABLE readings(
     id INT AUTO_INCREMENT PRIMARY KEY,
-	reading INT NOT NULL,
+	sensor1 INT NOT NULL,
+    sensor2 INT NOT NULL,
+    sensor3 INT NOT NULL,
+    sensor4 INT NOT NULL,
+    sensor5 INT NOT NULL,
+    sensor6 INT NOT NULL,
 	date_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    patients_id INT NOT NULL,
+    patients_id VARCHAR(9) NOT NULL,
     INDEX par_ind (patients_id),
     FOREIGN KEY (patients_id)
-        REFERENCES patients(id)
+        REFERENCES patients(patients_id)
         ON DELETE CASCADE
 ) ENGINE=INNODB;
 
@@ -21,9 +27,9 @@ CREATE TABLE reps(
     weight INT NOT NULL,
     reps INT NOT NULL,
     date_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    patients_id INT NOT NULL,
+    patients_id VARCHAR(9) NOT NULL,
     INDEX par_ind (patients_id),
     FOREIGN KEY (patients_id)
-        REFERENCES patients(id)
+        REFERENCES patients(patients_id)
         ON DELETE CASCADE
 ) ENGINE=INNODB;
