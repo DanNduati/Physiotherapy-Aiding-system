@@ -1,4 +1,13 @@
 # FSREsp32
+## Folder structure
+	.
+	├── app			# The Mobile app
+	├── db			# Mysql database schema sql script
+	├── docs		# Documentation directory
+	├── libraries	# Arduino libraries used in the firmware
+	├── images		# Images directory
+	├── webapp		# webapp directory
+	└── README.md
 ## Hardware Components
 ### 1. Esp32 - Microcontroller
 - Get analog force from the FSR sensors
