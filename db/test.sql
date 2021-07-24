@@ -1,0 +1,1 @@
+UPDATE patients SET in_use =1 WHERE patients_id ='123456789';

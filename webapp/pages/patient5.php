@@ -24,7 +24,43 @@
 <body>
     <section id="graph">
         <div class="container">
-            <h2>Patient 5 data</h2>
+            <?php
+            $servername = "localhost";
+            $username = "root";
+            $password = "12345678";
+            $dbname = "fsresp32";
+            
+            // Create connection
+            $conn = new mysqli($servername, $username, $password, $dbname);
+            if ($conn->connect_error) {
+              die("Connection failed: " . $conn->connect_error);
+            }
+            //get all ids and select the correct patien data to display as the header
+            $query = "SELECT patients_id FROM patients ORDER BY id";
+            $result = $conn->query($query);
+            $data = array();
+
+            foreach ($result as $row) {
+                $data[] = $row["patients_id"];
+            }
+            $p_id = $data[4];
+
+            $sql = "SELECT patients_id,patients_fname,patients_lname FROM patients WHERE patients_id=$p_id";
+            if ($result = $conn->query($sql)) {
+                $i =1;
+                while ($row = $result->fetch_assoc()) {
+                    $row_id = $row["patients_id"];
+                    $row_fname = $row["patients_fname"];
+                    $row_lname = $row["patients_lname"];
+                    echo '<h2>'.$row_fname." ".$row_lname." id: ".$row_id.'</h2>';
+                    $i++;
+                }
+                $result->free();
+            }
+            $conn->close();
+
+
+            ?>
         </div>        
     </section>
     <section id="pgraph">
@@ -54,7 +90,7 @@
                 <thead>
                   <tr> 
                     <th>Datetime</th> 
-                    <th>Weight</th>
+                    <th>Weight(kg)</th>
                     <th>reps</th>  
                   </tr>
               </thead>';
@@ -85,7 +121,79 @@
                         </tr>
                     </tbody>';
                 }
+                echo '</table>';
                 $result->free();
+            }
+            $conn->close();
+            //echo json_encode($pdata);
+        ?>
+        </div>
+    </section>
+    <section id="device_records">
+        <!--table showing the previous records of patients-->
+        <div class="container">
+            <h2>Device Sensor Logs</h2>
+        
+        <?php
+            $servername = "localhost";
+            $username = "root";
+            $password = "12345678";
+            $dbname = "fsresp32";
+
+            // Create connection
+            $conn = new mysqli($servername, $username, $password, $dbname);
+            if ($conn->connect_error) {
+              die("Connection failed: " . $conn->connect_error);
+            }
+
+            echo '<table class="table">
+                <thead>
+                  <tr> 
+                    <th>Datetime</th> 
+                    <th>Sensor1</th>
+                    <th>Sensor2</th> 
+                    <th>Sensor3</th>
+                    <th>Sensor4</th>
+                    <th>Sensor5</th>
+                    <th>Sensor6</th>
+                  </tr>
+              </thead>';
+            //select first id
+            //get all civilianids and order them in descending order 
+            $query = "SELECT patients_id FROM patients ORDER BY id";
+            $result = $conn->query($query);
+            $data = array();
+
+            foreach ($result as $row) {
+                $data[] = $row["patients_id"];
+            }
+            $p_id = $data[4];
+            
+            $sql = "SELECT date_time,sensor1,sensor2,sensor3,sensor4,sensor5,sensor6 FROM readings where patients_id=$p_id ORDER BY date_time DESC";
+            if ($result = $conn->query($sql)) {
+                while ($row = $result->fetch_assoc()) {
+                    $row_timestamp = $row["date_time"];
+                    $row_sensor1 = $row["sensor1"];
+                    $row_sensor2 = $row["sensor2"];
+                    $row_sensor3 = $row["sensor3"];
+                    $row_sensor4 = $row["sensor4"];
+                    $row_sensor5 = $row["sensor5"];
+                    $row_sensor6 = $row["sensor6"];
+                    echo '
+                    <tbody>
+                        <tr> 
+                            <td>' . $row_timestamp . '</td> 
+                            <td>' . $row_sensor1 . '</td> 
+                            <td>' . $row_sensor2 . '</td> 
+                            <td>' . $row_sensor3 . '</td> 
+                            <td>' . $row_sensor4 . '</td>
+                            <td>' . $row_sensor5 . '</td> 
+                            <td>' . $row_sensor6 . '</td> 
+                        </tr>
+                    </tbody>';
+                }
+                $result->free();
+                echo '</table>';
             }
             $conn->close();
             //echo json_encode($pdata);

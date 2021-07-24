@@ -2,6 +2,7 @@ CREATE TABLE patients (
     id INT AUTO_INCREMENT,
 	patients_fname VARCHAR(50) NOT NULL,
 	patients_lname VARCHAR(50) NOT NULL,
+    in_use BOOLEAN DEFAULT 0,
     patients_id VARCHAR(9) NOT NULL UNIQUE,
     PRIMARY KEY (id)
 ) ENGINE=INNODB;

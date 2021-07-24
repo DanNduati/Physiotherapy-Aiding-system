@@ -18,8 +18,13 @@ function sanitize($data) {
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $patient_id = sanitize($_POST["patientid"]);
-    $reading = sanitize($_POST["reading"]);
-    $sql = "INSERT INTO readings (reading,patients_id) VALUES('$reading','$patient_id')";
+    $sensor1 = sanitize($_POST["sensor1"]);
+    $sensor2 = sanitize($_POST["sensor2"]);
+    $sensor3 = sanitize($_POST["sensor3"]);
+    $sensor4 = sanitize($_POST["sensor4"]);
+    $sensor5 = sanitize($_POST["sensor5"]);
+    $sensor6 = sanitize($_POST["sensor6"]);
+    $sql = "INSERT INTO readings (sensor1,sensor2,sensor3,sensor4,sensor5,sensor6,patients_id) VALUES('$sensor1','$sensor2','$sensor3','$sensor4','$sensor5','$sensor6','$patient_id')";
     if ($conn->query($sql) === TRUE)
      {
         echo "Record added successfully";

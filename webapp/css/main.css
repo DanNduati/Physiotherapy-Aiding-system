@@ -5,6 +5,10 @@ body {
 
 }
 
+h2{
+    text-align: center;
+}
+
 .container {
     width: 80%;
     margin: auto;
@@ -67,7 +71,7 @@ body {
 
 #prev_records h2{
     font-weight: 5px;
-    text-align: center;
+    /*text-align: center;*/
 }
 footer{
     font-size: 20px;
@@ -76,4 +80,13 @@ footer{
     color: #ffffff;
     background: #011322;
     text-align: center;
+}
+
+#device_records {
+    margin-top: 50px;
+}
+
+#device_records h2{
+    font-weight: 5px;
+    /*text-align: center;*/
 }

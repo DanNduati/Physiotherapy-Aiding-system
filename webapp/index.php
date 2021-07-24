@@ -28,7 +28,7 @@
     <section id="heading">
         <div class="container">
             <!--<h1> Welcome Physiotherapist</h1>-->
-            <h1>FSREsp32 Webapp</h1>
+            <h1>PAM</h1>
         </div>
     </section>
 
