@@ -1,14 +1,21 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <FirebaseESP32.h>
+#include <Arduino_JSON.h>
 #include "addons/TokenHelper.h"
 #include "addons/RTDBHelper.h"
 
 //wifi credentials
 const char* ssid  = "dan";
 const char* password = "dandandandan";
-//server url
-const char* server = "http://f4fb95ab2f60.ngrok.io/addboardData.php?";
+
+//server endpoints
+//get patient id list endpoint
+const char* getidsUrl = "http://139.162.172.67/externalcontrollers/getpatientids.php";
+//add sensor data endpoint
+const char* postDataUrl = "http://139.162.172.67/externalcontrollers/addboardData.php?";
+//patient id in use endpoint
+const char* inUseUrl = "http://139.162.172.67/externalcontrollers/getInUse.php";
 
 //firebase
 //api credentials
@@ -26,8 +33,6 @@ FirebaseConfig config;
 String database_path = "";
 //firebase unique identifier
 String fuid = "";
-//dummy data
-int count = 0;
 //device auth flag
 bool isAuthenticated = false;
 
@@ -37,9 +42,14 @@ String fsr_sensors[fsr_num] = {"fsr1", "fsr2", "fsr3", "fsr4", "fsr5", "fsr6"};
 int fsrPins[fsr_num] = {36, 39, 34, 35, 32, 33}; //array of fsr sensors
 int forceValues[fsr_num] = {0, 0, 0, 0, 0, 0}; //array of fsr sensor values
 
+//patients
+String patient_id_in_use;//variabe to store the patient id currently using the device(logged in the mobile app)
+String patient_ids[6];//dynamic array to store patient ids obtained from the server
+
 //intervals
 long lastSendTime = 0;        // last send time
 int interval = 5000;          // interval between sends
+
 
 void setup(void) {
   Serial.begin(115200); //initialize serial comm
@@ -48,12 +58,25 @@ void setup(void) {
 }
 
 void loop(void) {
-  if (millis() - lastSendTime > interval && isAuthenticated && Firebase.ready())
+
+  if (millis() - lastSendTime > interval)
   {
+    getInUse();
+    if (patient_id_in_use != null) {
+      Serial.println("sending sensor payload user data");
+      sendToFirebase();
+      sendToServer(patient_id_in_use, genRandomData(), genRandomData(), genRandomData(), genRandomData(), genRandomData(), genRandomData());
+    }
     lastSendTime = millis();
-    //sendToFirebase();
-    sendToServer("1111",genRandomData());
   }
+  /*
+    getPatientIds();
+    lastSendTime = millis();
+    sendToFirebase();
+    sendToServer(patient_id_in_use, genRandomData(),genRandomData(),genRandomData(),genRandomData(),genRandomData(),genRandomData());
+    //clear patient ids
+    memset(patient_ids,0, sizeof(patient_ids));
+  */
 }
 void wifiInit() {
   WiFi.begin(ssid, password);
@@ -67,6 +90,94 @@ void wifiInit() {
   Serial.println(WiFi.localIP());
   Serial.println();
 
+}
+//function to get the patient id that is logged in on the mobile app
+void getInUse() {
+  patient_id_in_use = "";
+  Serial.println("Getting the patient id currently in use");
+  if (WiFi.status() == WL_CONNECTED) {
+    String inUsePayload = httpGETRequest(inUseUrl);
+    JSONVar inuseObject = JSON.parse(inUsePayload);
+    if (JSON.typeof(inuseObject) == "undefined") {
+      Serial.println("Parsing input failed!");
+      return;
+    }
+    Serial.print("JSON response = ");
+    Serial.println(inuseObject);
+    if ((inuseObject[0]) != null) {
+      Serial.print("The id in use is: ");
+      Serial.println(inuseObject[0]);
+      patient_id_in_use = inuseObject[0];
+    }
+    else {
+      Serial.println("No user is currently logged into the app");
+    }
+
+  }
+}
+
+//function to get all the patients currently registered in the server
+void getPatientIds() {
+
+  Serial.println("Getting patient ids from the server");
+  if (WiFi.status() == WL_CONNECTED) {
+    String idpayload = httpGETRequest(getidsUrl);
+    //Serial.println(idpayload);
+    JSONVar myObject = JSON.parse(idpayload);
+    if (JSON.typeof(myObject) == "undefined") {
+      Serial.println("Parsing input failed!");
+      return;
+    }
+
+    Serial.print("JSON object = ");
+    Serial.println(myObject);
+
+    //get every id and store to an array
+    for (int i = 0; i < myObject.length(); i++) {
+      //Serial.println(myObject[i]);
+      patient_ids[i] = myObject[i];
+    }
+  }
+}
+
+//function to verify that the id is indeed in the server before sending its data
+bool isIdValid(String id) {
+  //getPatientIds();
+  //check if the id hardcoded in the firmware is in the server
+  for (int i = 0; i < sizeof(patient_ids); i++) {
+    //check for a match
+    if (id == patient_ids[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+//function to make get requests to the server
+String httpGETRequest(const char* serverName) {
+  WiFiClient client;
+  HTTPClient http;
+
+  // Your Domain name with URL path or IP address with path
+  http.begin(client, serverName);
+
+  // Send HTTP POST request
+  int httpResponseCode = http.GET();
+
+  String payload = "{}";
+
+  if (httpResponseCode > 0) {
+    Serial.print("HTTP Response code: ");
+    Serial.println(httpResponseCode);
+    payload = http.getString();
+  }
+  else {
+    Serial.print("Error code: ");
+    Serial.println(httpResponseCode);
+  }
+  // Free resources
+  http.end();
+
+  return payload;
 }
 
 void getConfigs(void *ptr) {
@@ -105,17 +216,23 @@ void firebaseInit() {
 
 }
 
-void sendToServer(String patient_id,int forceval) {
-  HTTPClient http;
-  http.begin(server);
-  http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-  //prepare the post data
-  String httpRequestData = "patientid=" + patient_id + "&reading=" + String(forceval)+"";
-  //post data to the server
-  int httpResponseCode = http.POST(httpRequestData);
-  Serial.println(httpResponseCode);
-  // Free http resource
-  http.end();
+
+void sendToServer(String patient_id, int sensor1val, int sensor2val, int sensor3val, int sensor4val, int sensor5val, int sensor6val) {
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+    http.begin(postDataUrl);
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    //prepare the post data
+    String httpRequestData = "patientid=" + patient_id + "&sensor1=" + String(sensor1val) + "&sensor2=" + String(sensor2val) + "&sensor3=" + String(sensor3val) + "&sensor4=" + String(sensor4val) + "&sensor5=" + String(sensor5val) + "&sensor6=" + String(sensor6val) + "";
+    //post data to the server
+    int httpResponseCode = http.POST(httpRequestData);
+    Serial.println(httpResponseCode);
+    // Free http resource
+    http.end();
+  }
+  else {
+    Serial.println("WIFI disconnected!!");
+  }
 }
 void sendToFirebase() {
   // Check that the interval has elapsed before, device is authenticated and the firebase service is ready.
