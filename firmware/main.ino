@@ -61,22 +61,19 @@ void loop(void) {
 
   if (millis() - lastSendTime > interval)
   {
+    //get all the force values from the sensors and store them in the forceValues array
+    for(int i=0; i<fsr_num; i++){
+      forceValues[i] = getForceValue(i);
+    }
     getInUse();
     if (patient_id_in_use != null) {
       Serial.println("sending sensor payload user data");
       sendToFirebase();
-      sendToServer(patient_id_in_use, genRandomData(), genRandomData(), genRandomData(), genRandomData(), genRandomData(), genRandomData());
+      sendToServer(patient_id_in_use, genRandomData(), genRandomData(), genRandomData(), genRandomData(), genRandomData(), genRandomData());//comment this out when using the actual sensors use the line below instead
+      //sendToServer(patient_id_in_use, forceValues[0], forceValues[1], forceValues[2], forceValues[3], forceValues[4], forceValues[5]);
     }
     lastSendTime = millis();
   }
-  /*
-    getPatientIds();
-    lastSendTime = millis();
-    sendToFirebase();
-    sendToServer(patient_id_in_use, genRandomData(),genRandomData(),genRandomData(),genRandomData(),genRandomData(),genRandomData());
-    //clear patient ids
-    memset(patient_ids,0, sizeof(patient_ids));
-  */
 }
 void wifiInit() {
   WiFi.begin(ssid, password);
@@ -245,7 +242,9 @@ void sendToFirebase() {
     String sensor_node = root_node + "/" + fsr_sensors[i];
     String node = sensor_node + "/value";
     //get random force data
-    int fsr = genRandomData();
+    
+    int fsr = genRandomData();//comment this line out if you are using the actual sensors
+    //int fsr = getForceValue(i);
     // Send the value our count to the firebase realtime database
     if (Firebase.set(fbdo, node.c_str(), fsr))
     {
@@ -270,19 +269,19 @@ void sendToFirebase() {
 }
 
 //function to get fsr sensor data by index
-long getForceValue(int index) {
-  long reading = analogRead(fsrPins[index]);
+int getForceValue(int index) {
+  int reading = analogRead(fsrPins[index]);
   //get the voltage in mv
-  long voltage = map(reading, 0, 4095, 0, 3300);
+  int voltage = map(reading, 0, 4095, 0, 3300);
   if (voltage > 0) {
-    long resistance = 3300 - voltage;
+    int resistance = 3300 - voltage;
     resistance *= 10000; //10k pulldown resistor
     resistance /= voltage;
 
     //get the conductance
-    long conductance = 1000000; // 10k -> microohms
+    int conductance = 1000000; // 10k -> microohms
     conductance /= resistance;
-    long force = 0;
+    int force = 0;
     if (conductance <= 1000) {
       force = conductance / 80;
     } else {
