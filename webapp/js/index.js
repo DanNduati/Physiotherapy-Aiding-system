@@ -115,8 +115,8 @@
               var weights = [];
               var reps = [];
               for (var i in data) {
-                  weights.push(data[i].weight);
-                  reps.push(data[i].reps);
+                  weights.unshift(data[i].weight);
+                  reps.unshift(data[i].reps);
               }
 
               var chartdata = {
@@ -128,14 +128,13 @@
                           borderColor: '#051E34',
                           hoverBackgroundColor: '#051E34',
                           hoverBorderColor: '#051E34',
-                          tension: 0.1,
                           data: reps
                       }
                   ]
               };
               var graphTarget = $("#graph1");
               var myLineChart = new Chart(graphTarget, {
-                  type: 'line',
+                  type: 'bar',
                   data: chartdata
               });
           });
