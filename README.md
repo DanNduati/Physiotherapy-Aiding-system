@@ -27,6 +27,7 @@
 - User registration and authentication (login and register)
 - Weight selection and reps addition to the database
 - Plot real time line graph of data from the microcontroller device(esp32) 
+
 |   <img height="500" src="images/mobileapp/login_app.png"></img>  |      <img height="500" src="images/mobileapp/signup_app.png"></img>     |
 |:----------------------------------------------------------------:|:-----------------------------------------------------------------------:|
 | <img height="500" src="images/mobileapp/exercise_app.png"></img> | <img height="500" src="images/mobileapp/weightselection_app.png"></img> |
@@ -35,9 +36,7 @@
 - No authentication justs serves data to the physiotherapist
 - Plot line graphs of weight and reps done for individual patients and displays tables of the same and data from the device
 
-|   <img height="500" src="images/mobileapp/login_app.png"></img>  |      <img height="500" src="images/mobileapp/signup_app.png"></img>     |
-|:----------------------------------------------------------------:|:-----------------------------------------------------------------------:|
-| <img height="500" src="images/mobileapp/exercise_app.png"></img> | <img height="500" src="images/mobileapp/weightselection_app.png"></img> |
+
 
 ### 3. Storage
 ### Firebase realtime database
