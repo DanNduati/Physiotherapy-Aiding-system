@@ -15,6 +15,7 @@ CREATE TABLE readings(
     sensor4 INT NOT NULL,
     sensor5 INT NOT NULL,
     sensor6 INT NOT NULL,
+    total_mass INT NOT NULL,
 	date_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     patients_id VARCHAR(9) NOT NULL,
     INDEX par_ind (patients_id),

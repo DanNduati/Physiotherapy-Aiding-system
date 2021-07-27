@@ -24,7 +24,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sensor4 = sanitize($_POST["sensor4"]);
     $sensor5 = sanitize($_POST["sensor5"]);
     $sensor6 = sanitize($_POST["sensor6"]);
-    $sql = "INSERT INTO readings (sensor1,sensor2,sensor3,sensor4,sensor5,sensor6,patients_id) VALUES('$sensor1','$sensor2','$sensor3','$sensor4','$sensor5','$sensor6','$patient_id')";
+    $total_mass = sanitize($_POST["total_mass"]);
+    $sql = "INSERT INTO readings (sensor1,sensor2,sensor3,sensor4,sensor5,sensor6,total_mass,patients_id) VALUES('$sensor1','$sensor2','$sensor3','$sensor4','$sensor5','$sensor6','$total_mass','$patient_id')";
+    echo $sql;
     if ($conn->query($sql) === TRUE)
      {
         echo "Record added successfully";

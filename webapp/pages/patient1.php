@@ -134,7 +134,6 @@
         <!--table showing the previous records of patients-->
         <div class="container">
             <h2>Device Sensor Logs</h2>
-        
         <?php
             $servername = "localhost";
             $username = "root";
@@ -157,6 +156,7 @@
                     <th>Sensor4</th>
                     <th>Sensor5</th>
                     <th>Sensor6</th>
+                    <th>Total Mass(kg)</th>
                   </tr>
               </thead>';
             //select first id
@@ -170,7 +170,7 @@
             }
             $p_id = $data[0];
             
-            $sql = "SELECT date_time,sensor1,sensor2,sensor3,sensor4,sensor5,sensor6 FROM readings where patients_id=$p_id ORDER BY date_time DESC";
+            $sql = "SELECT date_time,sensor1,sensor2,sensor3,sensor4,sensor5,sensor6,total_mass FROM readings where patients_id=$p_id ORDER BY date_time DESC";
             if ($result = $conn->query($sql)) {
                 while ($row = $result->fetch_assoc()) {
                     $row_timestamp = $row["date_time"];
@@ -180,7 +180,7 @@
                     $row_sensor4 = $row["sensor4"];
                     $row_sensor5 = $row["sensor5"];
                     $row_sensor6 = $row["sensor6"];
-                    
+                    $row_tmass = $row["total_mass"];
                     echo '
                     <tbody>
                         <tr> 
@@ -191,6 +191,7 @@
                             <td>' . $row_sensor4 . '</td>
                             <td>' . $row_sensor5 . '</td> 
                             <td>' . $row_sensor6 . '</td> 
+                            <td>' . $row_tmass . '</td> 
                         </tr>
                     </tbody>';
                 }
@@ -200,6 +201,12 @@
             $conn->close();
             //echo json_encode($pdata);
         ?>
+        
+        </div>
+    </section>
+    <section id="gohome">
+        <div class="container">
+            <a href=../index.php><input type=button class="btn btn-primary"value='HOME'></a>
         </div>
     </section>
     <script  src="../js/index.js">

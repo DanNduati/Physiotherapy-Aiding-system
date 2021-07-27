@@ -60,6 +60,11 @@ h2{
     margin: 10px;
 }
 
+#patients h2{
+    font-weight: 5px;
+    text-align: center;
+}
+
 #bottom-patient .container{
     margin-top: 10px;
     text-align: center;
@@ -89,4 +94,12 @@ footer{
 #device_records h2{
     font-weight: 5px;
     /*text-align: center;*/
+}
+#gohome{
+    margin-top: 20px;
+}
+#gohome input{
+    margin:0 auto;
+    display:block;
+    min-width: 500px;
 }

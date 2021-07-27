@@ -55,7 +55,8 @@
               die("Connection failed: " . $conn->connect_error);
             }
             $sql = "SELECT patients_id,patients_fname,patients_lname FROM patients ORDER BY id ASC";
-            if ($result = $conn->query($sql)) {
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0) {
                 $i =1;
                 while ($row = $result->fetch_assoc()) {
                     $row_id = $row["patients_id"];
@@ -65,6 +66,11 @@
                     $i++;
                 }
                 $result->free();
+            }
+            else{
+                echo'<div class="alert alert-info" role="alert">
+                    There are currently no users signed up
+                    </div>';
             }
             $conn->close();
         ?>
