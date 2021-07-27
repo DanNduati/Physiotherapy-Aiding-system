@@ -30,7 +30,7 @@
 
 |   <img height="500" src="images/mobileapp/login_app.png"></img>  |      <img height="500" src="images/mobileapp/signup_app.png"></img>     |
 |:----------------------------------------------------------------:|:-----------------------------------------------------------------------:|
-| <img height="500" src="images/mobileapp/exercise_app.png"></img> | <img width="50%" src="images/mobileapp/weightselection_app.png"></img> |
+| <img height="500" src="images/mobileapp/exercise_app.png"></img> | <img width="500" src="images/mobileapp/weightselection_app.png"></img> |
 
 ### 2. Web app
 - No authentication justs serves data to the physiotherapist
