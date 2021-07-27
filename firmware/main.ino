@@ -40,7 +40,7 @@ bool isAuthenticated = false;
 const int fsr_num = 6;
 String fsr_sensors[fsr_num] = {"fsr1", "fsr2", "fsr3", "fsr4", "fsr5", "fsr6"};
 int fsrPins[fsr_num] = {36, 39, 34, 35, 32, 33}; //array of fsr sensors
-int forceValues[fsr_num] = {0, 0, 0, 0, 0, 0}; //array of fsr sensor values
+int forceValues[fsr_num]; //array of fsr sensor values
 
 //patients
 String patient_id_in_use;//variabe to store the patient id currently using the device(logged in the mobile app)
@@ -48,28 +48,33 @@ String patient_ids[6];//dynamic array to store patient ids obtained from the ser
 
 //intervals
 long lastSendTime = 0;        // last send time
-int interval = 5000;          // interval between sends
+int interval = 60000;          // interval between sends
 
 
 void setup(void) {
   Serial.begin(115200); //initialize serial comm
   wifiInit();
-  firebaseInit();
+  //firebaseInit();
 }
 
 void loop(void) {
 
   if (millis() - lastSendTime > interval)
   {
-    //get all the force values from the sensors and store them in the forceValues array
-    for(int i=0; i<fsr_num; i++){
+    /*
+      //get all the force values from the sensors and store them in the forceValues array
+      for(int i=0; i<fsr_num; i++){
       forceValues[i] = getForceValue(i);
+      }*/
+    //get random mass values to send to server
+    for (int i = 0; i < fsr_num; i++) {
+      forceValues[i] = genRandomData();
     }
+
     getInUse();
     if (patient_id_in_use != null) {
-      Serial.println("sending sensor payload user data");
-      sendToFirebase();
-      sendToServer(patient_id_in_use, genRandomData(), genRandomData(), genRandomData(), genRandomData(), genRandomData(), genRandomData());//comment this out when using the actual sensors use the line below instead
+      //sendToFirebase();
+      ;      sendToServer(patient_id_in_use, forceValues); //comment this out when using the actual sensors use the line below instead
       //sendToServer(patient_id_in_use, forceValues[0], forceValues[1], forceValues[2], forceValues[3], forceValues[4], forceValues[5]);
     }
     lastSendTime = millis();
@@ -214,18 +219,26 @@ void firebaseInit() {
 }
 
 
-void sendToServer(String patient_id, int sensor1val, int sensor2val, int sensor3val, int sensor4val, int sensor5val, int sensor6val) {
+void sendToServer(String patient_id, int sensorVals[fsr_num]) {
+  Serial.println("Sending data to the server");
   if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
     http.begin(postDataUrl);
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    //get the sensor values from the array passed as a pointer
+    for (int i = 0; i < fsr_num; i++) {
+      forceValues[i] = sensorVals[i];
+    }
     //prepare the post data
-    String httpRequestData = "patientid=" + patient_id + "&sensor1=" + String(sensor1val) + "&sensor2=" + String(sensor2val) + "&sensor3=" + String(sensor3val) + "&sensor4=" + String(sensor4val) + "&sensor5=" + String(sensor5val) + "&sensor6=" + String(sensor6val) + "";
+    String httpRequestData = "patientid=" + patient_id + "&sensor1=" + String(forceValues[0]) + "&sensor2=" + String(forceValues[1]) + "&sensor3=" + String(forceValues[2]) + "&sensor4=" + String(forceValues[3]) + "&sensor5=" + String(forceValues[4]) + "&sensor6=" + String(forceValues[5]) + "&total_mass=" + String(getTotalMass(forceValues)) + "";
+    Serial.println(httpRequestData);
     //post data to the server
     int httpResponseCode = http.POST(httpRequestData);
-    Serial.println(httpResponseCode);
+    //Serial.println(httpResponseCode);
     // Free http resource
     http.end();
+    //reset the forceValues array
+    memset(forceValues, 0, sizeof(forceValues));
   }
   else {
     Serial.println("WIFI disconnected!!");
@@ -242,7 +255,7 @@ void sendToFirebase() {
     String sensor_node = root_node + "/" + fsr_sensors[i];
     String node = sensor_node + "/value";
     //get random force data
-    
+
     int fsr = genRandomData();//comment this line out if you are using the actual sensors
     //int fsr = getForceValue(i);
     // Send the value our count to the firebase realtime database
@@ -291,9 +304,35 @@ int getForceValue(int index) {
     return force;
   }
 }
+//function to return the mass from the force sensors
+int getMassValue(int index) {
+  const int resistor = 10000; //10K ohms resistor
+  float reading = analogRead(fsrPins[index]);
+  float fsr_volt = 0;
+  //calibration constants
+  const unsigned short a = 35423;
+  const float b = -0.735, c = -0.0496;
+  float A = 9.81;//accelarion constant
+  float fsr_total_mass = 0;
+  //adc conversion - convert to millivolts
+  fsr_volt = ((reading * 3300)/4095.0);
+  if(fsr_volt !=0 ){ //if there is a force
+    
+  }
+  
+}
 
-//function to generate random force data to be sent to firebase as fsr values since i dont have the sensors
+//function to get cumulative mass
+int getTotalMass(int massVals[fsr_num]) {
+  int totalMass = 0;
+  for (int i = 0; i < fsr_num; i++) {
+    totalMass += massVals[i];
+  }
+  return totalMass;
+}
+
+//function to generate random mass data to be sent to firebase and the server as fsr values since i dont have the sensors
 int genRandomData() {
-  int force_value = random(1000);
-  return force_value;
+  int mass_value = random(10);
+  return mass_value;
 }
