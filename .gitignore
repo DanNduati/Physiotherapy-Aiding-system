@@ -1,2 +1,3 @@
-firmware/func.ino
+firmware/func.cpp
 firmware/add.cpp
+*.out
