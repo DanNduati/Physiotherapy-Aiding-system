@@ -48,7 +48,7 @@ String patient_ids[6];//dynamic array to store patient ids obtained from the ser
 
 //intervals
 long lastSendTime = 0;        // last send time
-int interval = 60000;          // interval between sends
+int interval = 2000;          // interval between sends
 
 
 void setup(void) {
@@ -70,12 +70,16 @@ void loop(void) {
     for (int i = 0; i < fsr_num; i++) {
       forceValues[i] = getAnalogReading(i);
       if(i!=fsr_num-1){
-        Serial.print("Readings: ");
+        Serial.print("Pin : ");
+        Serial.print(fsrPins[i]);
+        Serial.print("  value:  ");
         Serial.print(forceValues[i]);
         Serial.print("\t");
       }
       else{
-        Serial.print("\t");
+        Serial.print("Pin : ");
+        Serial.print(fsrPins[i]);
+        Serial.print("  value: ");
         Serial.println(forceValues[i]);
       }
     }
