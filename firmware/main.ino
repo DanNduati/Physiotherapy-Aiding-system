@@ -80,12 +80,14 @@ void loop(void) {
       }
     }
 
-    getInUse();
+    //getInUse();
+    /*
     if (patient_id_in_use != null) {
       //sendToFirebase();
       //sendToServer(patient_id_in_use, forceValues); //comment this out when using the actual sensors use the line below instead
       //sendToServer(patient_id_in_use, forceValues[0], forceValues[1], forceValues[2], forceValues[3], forceValues[4], forceValues[5]);
     }
+    */
     lastSendTime = millis();
   }
 }
