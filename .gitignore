@@ -1,3 +1,4 @@
 firmware/func.cpp
 firmware/add.cpp
 *.out
+images/
