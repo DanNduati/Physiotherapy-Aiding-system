@@ -1,0 +1,71 @@
+/*Fonts*/
+@import url('https://fonts.googleapis.com/css2?family=Capriola&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+/*Global */
+body{
+	font:15px/1.5
+	padding: 0;
+	margin: 0;
+}
+
+.container{
+	width: 80%;
+	margin: auto;
+	overflow: hidden;
+	padding: 10px;
+}
+
+/*header*/
+header{
+	font-family: 'Montserrat', sans-serif;
+}
+
+.bi {
+  vertical-align: -.125em;
+  fill: currentColor;
+}
+
+.text-small {
+  font-size: 85%;
+}
+
+/*main-content*/
+#main-content{
+	min-height: 800px;
+	background: #EBEFF2;
+}
+
+#main-content h2{
+	text-align: center;
+	margin-top: 20%;
+	margin-bottom: 30px;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 60px;
+	font-weight: 700;
+}
+
+#main-content p{
+	font-family: 'Montserrat', sans-serif;
+	text-align: center;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+#main-content button{
+	font-family: 'Montserrat', sans-serif;
+	display: block;
+	margin: auto;
+	text-align: center;
+}
+/*footer*/
+footer{
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+}
+
+footer a{
+	text-decoration: none;
+}
