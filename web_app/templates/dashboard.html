@@ -19,8 +19,15 @@
 				        	</ul>
 				        	<a class="btn mt-3 btn-outline-dark" href="#">	View 	Data</a>
 				      	</div>
-				      	<div class="card-footer text-muted">
-				          	offline
+				      	<div class="card-footer">
+				          	{%if patient.in_use == '1'%}
+				          	<small style="color:green;">Online</small>
+
+				 
+				          	{%else%}
+				          	<small class="text-muted">Offline</small>
+
+				          	{%endif%}
 				      	</div>
 				    </div>
 				</div>
