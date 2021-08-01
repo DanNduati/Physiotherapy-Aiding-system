@@ -33,13 +33,15 @@ header{
 
 /*main-content*/
 #main-content{
-	min-height: 800px;
 	background: #EBEFF2;
+	min-height: 1000px;
+}
+#main-content .content-heading{
+	margin-top: 20%;
 }
 
 #main-content h2{
 	text-align: center;
-	margin-top: 20%;
 	margin-bottom: 30px;
 	font-family: 'Montserrat', sans-serif;
 	font-size: 60px;
@@ -53,9 +55,10 @@ header{
 	margin-bottom: 30px;
 }
 
-#main-content button{
+#main-content a{
 	font-family: 'Montserrat', sans-serif;
 	display: block;
+	width: 200px;
 	margin: auto;
 	text-align: center;
 }

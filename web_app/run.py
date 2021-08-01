@@ -11,7 +11,9 @@ def home():
     return render_template('home.html',title='Home',year=date.today().year)
 
 #dashboard route
-
+@app.route("/dashboard")
+def dash():
+    return render_template('dashboard.html',title='Dashboard',year=date.today().year)
 
 #dynamic patient data route
 
