@@ -48,7 +48,7 @@ String patient_ids[6];//dynamic array to store patient ids obtained from the ser
 
 //intervals
 long lastSendTime = 0;        // last send time
-int interval = 60000;          // interval between sends
+int interval = 2000;          // interval between sends
 
 
 void setup(void) {
@@ -68,15 +68,30 @@ void loop(void) {
       }*/
     //get random mass values to send to server
     for (int i = 0; i < fsr_num; i++) {
-      forceValues[i] = genRandomData();
+      forceValues[i] = getAnalogReading(i);
+      if(i!=fsr_num-1){
+        Serial.print("Pin : ");
+        Serial.print(fsrPins[i]);
+        Serial.print("  value:  ");
+        Serial.print(forceValues[i]);
+        Serial.print("\t");
+      }
+      else{
+        Serial.print("Pin : ");
+        Serial.print(fsrPins[i]);
+        Serial.print("  value: ");
+        Serial.println(forceValues[i]);
+      }
     }
 
-    getInUse();
+    //getInUse();
+    /*
     if (patient_id_in_use != null) {
       //sendToFirebase();
-      ;      sendToServer(patient_id_in_use, forceValues); //comment this out when using the actual sensors use the line below instead
+      //sendToServer(patient_id_in_use, forceValues); //comment this out when using the actual sensors use the line below instead
       //sendToServer(patient_id_in_use, forceValues[0], forceValues[1], forceValues[2], forceValues[3], forceValues[4], forceValues[5]);
     }
+    */
     lastSendTime = millis();
   }
 }
@@ -281,6 +296,10 @@ void sendToFirebase() {
   }
 }
 
+int getAnalogReadings(int index){
+  int reading = analogRead(fsrPins[index]);
+  return reading;
+}
 //function to get fsr sensor data by index
 int getForceValue(int index) {
   int reading = analogRead(fsrPins[index]);
