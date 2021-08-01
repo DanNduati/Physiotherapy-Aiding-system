@@ -2,76 +2,30 @@
 {%block main_content%}
 	<div class="content-section">
 		<h2>Welcome to the dashboard</h2>
-		<p>Please select the patients data you want to view</p>
+		<p>Please select a patient to view their data.</p>
 		<div class="patient_cards">
-			<!--loop through all patients in the database and display them as cards-->
+			
 			<div class="row row-cols-1 row-cols-md-2 g-4">
-			  <div class="col">
-			    <div class="card text-center">
-			      <div class="card-body">
-			        <h5 class="card-title">Patient 1</h5>
-			        <ul class="list-group list-group-flush">
-			        	<li class="list-group-item">First Name</li>
-			        	<li class="list-group-item">Second Name</li>
-			        	<li class="list-group-item">Patient ID</li>
-			        </ul>
-			        <a class="btn mt-3 btn-outline-dark" href="#">View Data</a>
-			      </div>
-			      <div class="card-footer text-muted">
-			          offline
-			      </div>
-			    </div>
-			  </div>
-			  <div class="col">
-			    <div class="card text-center">
-			      <div class="card-body">
-			        <h5 class="card-title">Patient 2</h5>
-			        <ul class="list-group list-group-flush">
-			        	<li class="list-group-item">First Name</li>
-			        	<li class="list-group-item">Second Name</li>
-			        	<li class="list-group-item">Patient ID</li>
-			        </ul>
-			        <a class="btn mt-3 btn-outline-dark" href="#">View Data</a>
-			      </div>
-			      <div class="card-footer text-muted">
-			          offline
-			      </div>
-			    </div>
-			  </div>
-			  <div class="col">
-			    <div class="card text-center">
-			      <div class="card-body">
-			        <h5 class="card-title">Patient 3</h5>
-			        <ul class="list-group list-group-flush">
-			        	<li class="list-group-item">First Name</li>
-			        	<li class="list-group-item">Second Name</li>
-			        	<li class="list-group-item">Patient ID</li>
-			        </ul>
-			        <a class="btn mt-3 btn-outline-dark" href="#">View Data</a>
-			      </div>
-			      <div class="card-footer text-muted">
-			          offline
-			      </div>
-			    </div>
-			  </div>
-			  <div class="col text-center">
-			    <div class="card">
-			      <div class="card-body">
-			        <h5 class="card-title">Patient 4</h5>
-			        <ul class="list-group list-group-flush">
-			        	<li class="list-group-item">First Name</li>
-			        	<li class="list-group-item">Second Name</li>
-			        	<li class="list-group-item">Patient ID</li>
-			        </ul>
-			        <a class="btn mt-3 btn-outline-dark" href="#">View Data</a>
-			      </div>
-			      <div class="card-footer text-muted">
-			          offline
-			      </div>
-			    </div>
-			  </div>
+				<!--loop through all patients in the database and display them as cards-->
+				{%for patient in patients%}
+				<div class="col">
+				    <div class="card text-center">
+				      	<div class="card-body">
+				        	<h5 class="card-title">Patient Details</h5>
+				        	<ul class="list-group list-group-flush">
+				        		<li class="list-group-item">{{patient.fname}}</li>
+				        		<li class="list-group-item">{{patient.lname}}</li>
+				        		<li class="list-group-item">{{patient.patients_id}}</li>
+				        	</ul>
+				        	<a class="btn mt-3 btn-outline-dark" href="#">	View 	Data</a>
+				      	</div>
+				      	<div class="card-footer text-muted">
+				          	offline
+				      	</div>
+				    </div>
+				</div>
+				{%endfor%}
 			</div>
-
 		</div>
 	</div>
 {%endblock%}
