@@ -68,7 +68,7 @@ void loop(void) {
       }*/
     //get random mass values to send to server
     for (int i = 0; i < fsr_num; i++) {
-      forceValues[i] = getAnalogReading(i);
+      forceValues[i] = getAnalogReadings(i);
       if(i!=fsr_num-1){
         Serial.print("Pin : ");
         Serial.print(fsrPins[i]);
@@ -84,14 +84,12 @@ void loop(void) {
       }
     }
 
-    //getInUse();
-    /*
+    getInUse();
     if (patient_id_in_use != null) {
-      //sendToFirebase();
+      sendToFirebase();
       //sendToServer(patient_id_in_use, forceValues); //comment this out when using the actual sensors use the line below instead
       //sendToServer(patient_id_in_use, forceValues[0], forceValues[1], forceValues[2], forceValues[3], forceValues[4], forceValues[5]);
     }
-    */
     lastSendTime = millis();
   }
 }
@@ -323,6 +321,47 @@ int getForceValue(int index) {
     return force;
   }
 }
+
+//Ortals magic function :)
+void Calculate_FSR()
+{
+  unsigned int fsr_resistance[fsr_num];
+  const unsigned short other_resistor = 10000; // 10[K Ohm] resistor
+
+  // force calculation parameters
+  float fsr_tot_force_now = 0, resistor_volt [fsr_num], fsr_force[fsr_num], force[fsr_num];
+  const unsigned short  a = 35423 ;
+  const float  b = -0.735, c = -0.0496 ;
+  int A = 9.81; // הנחה שזו התאוצה של כדור הארץ
+  float mass[fsr_num]={0};
+ 
+  // Take the measure the force applied to the FSRs and resistance
+  for (short i = 0; i < fsr_num; i++) // The number of pressure sensors is 6
+  {
+    resistor_volt[i] = (analogRead(fsrPins[i]) * 3300 / 4095.0); //Converting to milivolts
+
+    if (resistor_volt[i] != 0) // If there is force
+    {
+      fsr_resistance[i] = (3300 * other_resistor) / resistor_volt[i] - other_resistor;
+      mass[i] = (a * pow(fsr_resistance[i], b) + c);
+      force[i]= A * mass[i];
+      fsr_tot_force_now = fsr_tot_force_now + force[i];
+    }
+    else
+    {
+      fsr_resistance[i] = 10000000; // 10^7 [Ohm]
+      force[i] = 0;
+      fsr_tot_force_now = fsr_tot_force_now + force[i];
+    }
+      Serial.println("sensor number " + String(i));
+      Serial.println("resistor_volt[i] = " + String(resistor_volt[i]));
+      Serial.println("mass[i] = " + String(mass[i]));
+      Serial.println("fsr_force[i] = " + String(force[i]));
+      Serial.println("fsr_tot_force_now = " + String(fsr_tot_force_now));
+      Serial.println(" ");
+  }
+}
+
 //function to return the mass from the force sensors
 int getMassValue(int index) {
   const int resistor = 10000; //10K ohms resistor
