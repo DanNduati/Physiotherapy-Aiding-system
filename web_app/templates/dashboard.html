@@ -13,11 +13,11 @@
 				      	<div class="card-body">
 				        	<h5 class="card-title">Patient Details</h5>
 				        	<ul class="list-group list-group-flush">
-				        		<li class="list-group-item">{{patient.patients_fname}}</li>
-				        		<li class="list-group-item">{{patient.patients_lname}}</li>
-				        		<li class="list-group-item">{{patient.patients_id}}</li>
+				        		<li class="list-group-item">First Name: {{patient.patients_fname}}</li>
+				        		<li class="list-group-item">Last Name: {{patient.patients_lname}}</li>
+				        		<li class="list-group-item">ID: {{patient.patients_id}}</li>
 				        	</ul>
-				        	<a class="btn mt-3 btn-outline-dark" href="{{url_for('pdata',id=patient.patients_id)}}">View Data</a>
+				        	<a class="btn my-3 btn-outline-dark" href="{{url_for('pdata',id=patient.patients_id)}}">View Data</a>
 				      	</div>
 				      	<div class="card-footer">
 				          	{%if patient.in_use == '1'%}

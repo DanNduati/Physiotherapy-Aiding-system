@@ -1,6 +1,28 @@
 {%extends "layout.html"%}
-{%block main_content%}
-	<section id="analytics">
-		
+{%block main_content%}	
+	<section id="analytics" class="analytics-wrapper">
+		<!--Sidebar-->
+		<nav id="sidebar">
+			<div class="sidebar-header">
+				<div class="text-center">
+				  <img src="{{url_for('static',filename='user.svg')}}" class="img-fluid rounded" width ="100px"alt="user">
+				</div>
+				<p class="pt-3 pb-0"><strong>{{patient.patients_fname}} {{patient.patients_lname}}</strong></p>
+				<p class="mt-0 pb-0">{{patient.patients_id}}</p>
+			</div>
+			<ul class="list-unstyled components">
+				<li><a href="#">Mobile App Data</a></li>
+				<li><a href="#">Device Data</a></li>
+			</ul>
+		</nav>
+		<!--Main content-->
+		<div id="analytics-content">
+			    <div class="container-fluid">
+			        <button type="button" id="sidebarCollapse" class="btn btn-outline-dark mt-2">
+			            <span>Toggle Sidebar</span>
+			        </button>
+			    </div>
+			<!--graphs and tables-->
+		</div>
 	</section>
 {%endblock%}
