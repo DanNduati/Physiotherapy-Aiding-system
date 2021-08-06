@@ -47,7 +47,7 @@ header{
 }
 
 #main-content .content-section{
-	padding: 5%;
+	margin: 8%;
 }
 
 #main-content h2{
@@ -116,6 +116,7 @@ header{
 }
 
 #sidebar ul li a {
+
   padding: 40px;
   font-size: 1.1em;
   display: block;

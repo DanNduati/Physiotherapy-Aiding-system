@@ -6,7 +6,7 @@ from sqlalchemy.sql import expression, func
 app = Flask(__name__)
 
 #mysql database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:12345678@localhost/fsr_esp32'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:12345678@localhost/fsr_esp32'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -76,7 +76,9 @@ def pdata():
     #get the patients readings and reps here
     #for now lets get the details and render them to the page
     patient = Patient.query.filter_by(patients_id=patient_id).first_or_404(description='There is no data for patient with id:  {}'.format(patient_id))
-    return render_template("patient_data.html",patient=patient)
+    reps = Rep.query.filter_by(patients_id=patient_id)
+    readings = Reading.query.filter_by(patients_id=patient_id)
+    return render_template("patient_data.html",patient=patient,reps=reps,readings=readings)
 #dynamic patient data route
 if __name__ == "__main__":
     app.run(debug=True)

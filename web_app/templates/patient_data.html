@@ -9,10 +9,12 @@
 				</div>
 				<p class="pt-3 pb-0"><strong>{{patient.patients_fname}} {{patient.patients_lname}}</strong></p>
 				<p class="mt-0 pb-0">{{patient.patients_id}}</p>
+				<li class="border-bottom my-3"></li>
 			</div>
 			<ul class="list-unstyled components">
-				<li><a href="#">Mobile App Data</a></li>
-				<li><a href="#">Device Data</a></li>
+				<li><a id="app-data" href="#">Mobile App Data</a></li>
+				<li><a id="device-data" href="#">Device Data</a></li>
+				<li class="border-top my-3"></li>
 			</ul>
 		</nav>
 		<!--Main content-->
@@ -21,8 +23,68 @@
 			        <button type="button" id="sidebarCollapse" class="btn btn-outline-dark mt-2">
 			            <span>Toggle Sidebar</span>
 			        </button>
+			        <!--graphs and tables-->
+			        <div id="reps-graph">
+			        	<p class="mt-2">Reps Graph</p>
+			        	<canvas id="myChart" width="600" height="400"></canvas>
+			        </div>
+			        <div id="reps-table">
+			        	<table id="data" class="table table-striped">
+			        	    <thead>
+			        	      <tr>
+			        	        <th>ID</th>
+			        	        <th>Weight</th>
+			        	        <th>Reps</th>
+			        	        <th>Datetime</th>
+			        	      </tr>
+			        	    </thead>
+			        	    <tbody>
+			        	      {% for rep in reps %}
+			        	        <tr>
+			        	          <td>{{ rep.id }}</td>
+			        	          <td>{{ rep.weight }}</td>
+			        	          <td>{{ rep.reps }}</td>
+			        	          <td>{{ rep.datetime }}</td>
+			        	        </tr>
+			        	      {% endfor %}
+			        	    </tbody>
+			        	  </table>
+			        </div>
+			        <div id="readings-graph">
+			        	<p class="mt-2">Readings Graph</p>
+			        	<canvas id="myChart" width="600" height="400"></canvas>
+			        </div>
+			        <div id="readings-table">
+			        	<table id="data" class="table table-striped">
+			        	    <thead>
+			        	      <tr>
+			        	        <th>ID</th>
+			        	        <th>Sensor1</th>
+			        	        <th>Sensor2</th>
+			        	        <th>Sensor3</th>
+			        	        <th>Sensor4</th>
+			        	        <th>Sensor5</th>
+			        	        <th>Sensor6</th>
+			        	        <th>Datetime</th>
+			        	      </tr>
+			        	    </thead>
+			        	    <tbody>
+			        	      {% for reading in readings %}
+			        	        <tr>
+			        	          <td>{{ reading.id }}</td>
+			        	          <td>{{ reading.sensor1 }}</td>
+			        	          <td>{{ reading.sensor2 }}</td>
+			        	          <td>{{ reading.sensor3 }}</td>
+			        	          <td>{{ reading.sensor4 }}</td>
+			        	          <td>{{ reading.sensor5 }}</td>
+			        	          <td>{{ reading.sensor6 }}</td>
+			        	          <td>{{ reading.datetime }}</td>
+			        	        </tr>
+			        	      {% endfor %}
+			        	    </tbody>
+			        	  </table>
+			        </div>
 			    </div>
-			<!--graphs and tables-->
 		</div>
 	</section>
 {%endblock%}
