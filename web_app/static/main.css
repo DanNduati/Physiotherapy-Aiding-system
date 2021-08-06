@@ -4,17 +4,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
 /*Global */
+html{
+	height: 100vh;
+}
 body{
 	font:15px/1.5
 	padding: 0;
 	margin: 0;
+	display: flex;
+	flex-direction: column;
+  min-height: 100vh;
 }
 
 .container{
 	width: 80%;
 	margin: auto;
 	overflow: hidden;
-	padding: 10px;
 }
 
 /*header*/
@@ -34,7 +39,7 @@ header{
 /*main-content*/
 #main-content{
 	background: #EBEFF2;
-	min-height: 1000px;
+	flex: 1;
 }
 #main-content .content-heading{
 	margin-top: 20%;
@@ -62,9 +67,43 @@ header{
 	margin: auto;
 	text-align: center;
 }
+#no_container_main_content{
+	flex: 1;
+}
+
+.sidebar {
+  left: 0;
+  z-index: 100; /* Behind the navbar */
+  padding: 10px 0 0;
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+.sidebar-sticky {
+  top: 0;
+  height: calc(100vh - 10px);/*Height of the navbar*/
+  padding-top: .5rem;
+}
+
+.sidebar .nav-link {
+	padding: 40px;
+  font-weight: 500;
+  color: #333;
+}
+.sidebar .nav-link.active {
+  color: #007bff;
+}
+
+.sidebar-heading {
+  font-size: .75rem;
+  text-transform: uppercase;
+}
+
+#analytics {
+	
+}
 /*footer*/
 footer{
-	position: fixed;
+	height: 10vh;
 	bottom: 0;
 	width: 100%;
 }
@@ -72,3 +111,4 @@ footer{
 footer a{
 	text-decoration: none;
 }
+

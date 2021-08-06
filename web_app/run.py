@@ -1,6 +1,6 @@
 from datetime import datetime,date
 from flask import Flask
-from flask import render_template,redirect,url_for
+from flask import render_template,redirect,url_for,request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import expression, func
 app = Flask(__name__)
@@ -54,34 +54,7 @@ class Reading(db.Model):
         return f"Readings('{self.sensor1}','{self.sensor2}','{self.sensor3}','{self.sensor4}','{self.sensor5}','{self.sensor6}','{self.datetime}')"
 
 #summy patient data to test patient cards
-patients = [
-    {
-        'fname':'Daniel',
-        'lname':'Chege',
-        'in_use':'1',
-        'patients_id':'123456789'
-    },
-    {
-        'fname':'Ortal',
-        'lname':'Yaloz',
-        'in_use':'0',
-        'patients_id':'987654321'
-    },
-    {
-        'fname':'Golan',
-        'lname':'Radia',
-        'in_use':'0',
-        'patients_id':'333142124'
-    },
-    {
-        'fname':'John',
-        'lname':'Doe',
-        'in_use':'0',
-        'patients_id':'312651233'
-    }
 
-
-]
 #home route 
 @app.route("/")
 @app.route("/home")
@@ -91,8 +64,19 @@ def home():
 #dashboard route
 @app.route("/dashboard")
 def dash():
+    #query all users 
+    patients = Patient.query.all()
     return render_template('dashboard.html',title='Dashboard',year=date.today().year,patients=patients)
 
+#patient data route 
+@app.route("/dashboard/",methods=['GET'])
+def pdata():
+    patient_id = request.args.get('id',default=None,type =int)
+    print(patient_id)
+    #get the patients readings and reps here
+    #for now lets get the details and render them to the page
+    patient = Patient.query.filter_by(patients_id=patient_id).first_or_404(description='There is no data for patient with id:  {}'.format(patient_id))
+    return render_template("patient_data.html",patient=patient)
 #dynamic patient data route
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,10 +1,10 @@
 {%extends "layout.html"%}
 {%block main_content%}
+<div class="container">
 	<div class="content-section">
 		<h2>Welcome to the dashboard</h2>
 		<p>Please select a patient to view their data.</p>
-		<div class="patient_cards">
-			
+		<div class="patient_cards">	
 			<div class="row row-cols-1 row-cols-md-2 g-4">
 				<!--loop through all patients in the database and display them as cards-->
 				{%for patient in patients%}
@@ -13,20 +13,17 @@
 				      	<div class="card-body">
 				        	<h5 class="card-title">Patient Details</h5>
 				        	<ul class="list-group list-group-flush">
-				        		<li class="list-group-item">{{patient.fname}}</li>
-				        		<li class="list-group-item">{{patient.lname}}</li>
+				        		<li class="list-group-item">{{patient.patients_fname}}</li>
+				        		<li class="list-group-item">{{patient.patients_lname}}</li>
 				        		<li class="list-group-item">{{patient.patients_id}}</li>
 				        	</ul>
-				        	<a class="btn mt-3 btn-outline-dark" href="#">	View 	Data</a>
+				        	<a class="btn mt-3 btn-outline-dark" href="{{url_for('pdata',id=patient.patients_id)}}">View Data</a>
 				      	</div>
 				      	<div class="card-footer">
 				          	{%if patient.in_use == '1'%}
-				          	<small style="color:green;">Online</small>
-
-				 
+				          	<small style="color:green;">In session</small>				 
 				          	{%else%}
 				          	<small class="text-muted">Offline</small>
-
 				          	{%endif%}
 				      	</div>
 				    </div>
@@ -35,4 +32,5 @@
 			</div>
 		</div>
 	</div>
+</div>
 {%endblock%}
