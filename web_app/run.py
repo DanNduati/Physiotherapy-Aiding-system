@@ -76,8 +76,8 @@ def pdata():
     #get the patients readings and reps here
     #for now lets get the details and render them to the page
     patient = Patient.query.filter_by(patients_id=patient_id).first_or_404(description='There is no data for patient with id:  {}'.format(patient_id))
-    reps = Rep.query.filter_by(patients_id=patient_id)
-    readings = Reading.query.filter_by(patients_id=patient_id)
+    reps = Rep.query.filter_by(patients_id=patient_id).order_by(Rep.datetime.desc())
+    readings = Reading.query.filter_by(patients_id=patient_id).order_by(Reading.datetime.desc())
     return render_template("patient_data.html",patient=patient,reps=reps,readings=readings)
 #dynamic patient data route
 if __name__ == "__main__":

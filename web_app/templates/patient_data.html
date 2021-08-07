@@ -26,10 +26,10 @@
 			        <!--graphs and tables-->
 			        <div id="reps-graph">
 			        	<p class="mt-2">Reps Graph</p>
-			        	<canvas id="myChart" width="600" height="400"></canvas>
+			        	<canvas id="myChart" width="800" height="400"></canvas>
 			        </div>
 			        <div id="reps-table">
-			        	<table id="data" class="table table-striped">
+			        	<table id="rep-data" class="table table-striped">
 			        	    <thead>
 			        	      <tr>
 			        	        <th>ID</th>
@@ -52,10 +52,10 @@
 			        </div>
 			        <div id="readings-graph">
 			        	<p class="mt-2">Readings Graph</p>
-			        	<canvas id="myChart" width="600" height="400"></canvas>
+			        	<canvas id="myChart" width="800" height="400"></canvas>
 			        </div>
-			        <div id="readings-table">
-			        	<table id="data" class="table table-striped">
+			        <div id="readings-table" width=800px>
+			        	<table id="reading-data" class="table table-striped">
 			        	    <thead>
 			        	      <tr>
 			        	        <th>ID</th>
@@ -88,3 +88,22 @@
 		</div>
 	</section>
 {%endblock%}
+{% block scripts%}
+<script>
+$(document).ready(function () {
+	$(document).ready(function () {
+      $('#rep-data').DataTable({
+      	responsive: true
+      });
+      $('#reading-data').DataTable({
+      	responsive: true
+      });
+    });
+
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+    });
+
+});
+</script>
+{% endblock %}
