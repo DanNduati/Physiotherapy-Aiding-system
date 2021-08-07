@@ -35,10 +35,12 @@
 ### 2. Web app
 - No authentication justs serves data to the physiotherapist
 - Plot line graphs of weight and reps done for individual patients and displays tables of the same and data from the device
-
+### v1 - vanilla php(shit)
 | <img height="300" src="images/webapp/home_webapp.png"></img> | <img height="500" src="images/webapp/patient1_webapp.png"></img> |
 |:------------------------------------------------------------:|:----------------------------------------------------------------:|
-
+### v2 - Flask
+<img height="500" src="images/webappv2/Screenshot from 2021-08-07 12-43-30.png"></img>
+<img height="600" src="images/webappv2/Screenshot from 2021-08-07 12-44-27.png"></img>
 ### 3. Storage
 ### Firebase realtime database
 - Store force sensor data from the esp32
