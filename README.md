@@ -38,7 +38,7 @@
 ### v1 - vanilla php(shit)
 | <img height="300" src="images/webapp/home_webapp.png"></img> | <img height="500" src="images/webapp/patient1_webapp.png"></img> |
 |:------------------------------------------------------------:|:----------------------------------------------------------------:|
-### v2 - Flask
+### v2 - Flask [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 <img height="500" src="images/webappv2/Screenshot from 2021-08-07 12-43-30.png"></img>
 <img height="600" src="images/webappv2/Screenshot from 2021-08-07 12-44-27.png"></img>
 ### 3. Storage
