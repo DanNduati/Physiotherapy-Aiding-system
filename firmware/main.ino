@@ -104,36 +104,13 @@ void getInUse() {
       Serial.println("Parsing input failed!");
       return;
     }
-    Serial.print("JSON response = ");
-    Serial.println(inuseObject);
     if ((inuseObject[0]) != null) {
-      Serial.print("The id in use is: ");
+      Serial.print("Patient ID in session: ");
       Serial.println(inuseObject[0]);
       patient_id_in_use = inuseObject[0];
     }
     else {
       Serial.println("No user is currently logged into the app");
-    }
-  }
-}
-
-//function to get all the patients currently registered in the server
-void getPatientIds() {
-  Serial.println("Getting patient ids from the server");
-  if (WiFi.status() == WL_CONNECTED) {
-    String idpayload = httpGETRequest(getidsUrl);
-    //Serial.println(idpayload);
-    JSONVar myObject = JSON.parse(idpayload);
-    if (JSON.typeof(myObject) == "undefined") {
-      Serial.println("Parsing input failed!");
-      return;
-    }
-    Serial.print("JSON object = ");
-    Serial.println(myObject);
-    //get every id and store to an array
-    for (int i = 0; i < myObject.length(); i++) {
-      //Serial.println(myObject[i]);
-      patient_ids[i] = myObject[i];
     }
   }
 }
@@ -148,8 +125,6 @@ String httpGETRequest(const char* serverName) {
   int httpResponseCode = http.GET();
   String payload = "{}";
   if (httpResponseCode > 0) {
-    Serial.print("HTTP Response code: ");
-    Serial.println(httpResponseCode);
     payload = http.getString();
   }
   else {
@@ -279,7 +254,7 @@ void Calculate_FSR()
 {
   unsigned int fsr_resistance[fsr_num];
   const unsigned short other_resistor = 10000; // 10[K Ohm] resistor
-  //reset force array and total force
+  //reset force array and total force with every reading
   memset(force, 0, sizeof(force));
   fsr_tot_force_now = 0;
   // force calculation parameters
@@ -288,7 +263,6 @@ void Calculate_FSR()
   const float  b = -0.735, c = -0.0496 ;
   int A = 9.81;
   float mass[fsr_num]={0};
- 
   // Take the measure the force applied to the FSRs and resistance
   for (short i = 0; i < fsr_num; i++) // The number of pressure sensors is 6
   {
