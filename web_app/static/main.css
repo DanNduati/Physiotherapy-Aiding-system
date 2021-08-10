@@ -13,7 +13,7 @@ body{
 	margin: 0;
 	display: flex;
 	flex-direction: column;
-  min-height: 100vh;
+  	min-height: 100vh;
 }
 
 .container{
@@ -83,13 +83,16 @@ header{
 .analytics-wrapper {
     display: flex;
     width: 100%;
-    align-items: stretch;
 }
 
 #sidebar {
-    min-width: 250px;
+    width: 250px;
     max-width: 250px;
-    min-height: 100vh;
+    height: 100vh;
+    /*position: fixed;*/
+    left: 0;
+    z-index: 999;
+    transition: all 0.3s;
     background: #F0F0F0;
     transition: all 0.3s;
 }
@@ -112,7 +115,7 @@ header{
 
 
 #sidebar ul.components {
-		padding: 0px 0;
+	padding: 0px 0;
 }
 
 #sidebar ul li a {
@@ -129,6 +132,9 @@ header{
   /*border-radius: 20px*/
 }
 
+.container-fluid{
+	padding: 0px,50px,50px,50px;
+}
 @media (max-width: 768px) {
     #sidebar {
         margin-left: -250px;
@@ -182,4 +188,3 @@ footer{
 footer a{
 	text-decoration: none;
 }
-

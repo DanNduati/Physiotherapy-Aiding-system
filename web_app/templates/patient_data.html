@@ -17,74 +17,72 @@
 				<li class="border-top my-3"></li>
 			</ul>
 		</nav>
-		<!--Main content-->
-		<div id="analytics-content">
-			    <div class="container-fluid">
-			        <button type="button" id="sidebarCollapse" class="btn btn-outline-dark mt-2">
-			            <span>Toggle Sidebar</span>
-			        </button>
-			        <!--graphs and tables-->
-			        <div id="reps-graph">
-			        	<p class="mt-2">Reps Graph</p>
-			        	<canvas id="myChart" width="800" height="400"></canvas>
-			        </div>
-			        <div id="reps-table">
-			        	<table id="rep-data" class="table table-striped">
-			        	    <thead>
-			        	      <tr>
-			        	        <th>ID</th>
-			        	        <th>Weight</th>
-			        	        <th>Reps</th>
-			        	        <th>Datetime</th>
-			        	      </tr>
-			        	    </thead>
-			        	    <tbody>
-			        	      {% for rep in reps %}
-			        	        <tr>
-			        	          <td>{{ rep.id }}</td>
-			        	          <td>{{ rep.weight }}</td>
-			        	          <td>{{ rep.reps }}</td>
-			        	          <td>{{ rep.datetime }}</td>
-			        	        </tr>
-			        	      {% endfor %}
-			        	    </tbody>
-			        	  </table>
-			        </div>
-			        <div id="readings-graph">
-			        	<p class="mt-2">Readings Graph</p>
-			        	<canvas id="myChart" width="800" height="400"></canvas>
-			        </div>
-			        <div id="readings-table" width=800px>
-			        	<table id="reading-data" class="table table-striped">
-			        	    <thead>
-			        	      <tr>
-			        	        <th>ID</th>
-			        	        <th>Sensor1</th>
-			        	        <th>Sensor2</th>
-			        	        <th>Sensor3</th>
-			        	        <th>Sensor4</th>
-			        	        <th>Sensor5</th>
-			        	        <th>Sensor6</th>
-			        	        <th>Datetime</th>
-			        	      </tr>
-			        	    </thead>
-			        	    <tbody>
-			        	      {% for reading in readings %}
-			        	        <tr>
-			        	          <td>{{ reading.id }}</td>
-			        	          <td>{{ reading.sensor1 }}</td>
-			        	          <td>{{ reading.sensor2 }}</td>
-			        	          <td>{{ reading.sensor3 }}</td>
-			        	          <td>{{ reading.sensor4 }}</td>
-			        	          <td>{{ reading.sensor5 }}</td>
-			        	          <td>{{ reading.sensor6 }}</td>
-			        	          <td>{{ reading.datetime }}</td>
-			        	        </tr>
-			        	      {% endfor %}
-			        	    </tbody>
-			        	  </table>
-			        </div>
-			    </div>
+		<!--Main content -->
+		<div class="container-fluid">
+		    <button type="button" id="sidebarCollapse" class="btn btn-outline-dark mt-2">
+		        <span>Toggle Sidebar</span>
+		    </button>
+		    <!--graphs and tables-->
+		    <div id="reps-graph">
+		    	<p class="mt-2">Reps Graph</p>
+		    	<canvas id="repsChart" width="800" height="400"></canvas>
+		    </div>
+		    <div id="reps-table">
+		    	<table id="rep-data" class="table table-striped">
+		    	    <thead>
+		    	      <tr>
+		    	        <th>ID</th>
+		    	        <th>Weight</th>
+		    	        <th>Reps</th>
+		    	        <th>Datetime</th>
+		    	      </tr>
+		    	    </thead>
+		    	    <tbody>
+		    	      {% for rep in reps %}
+		    	        <tr>
+		    	          <td>{{ rep.id }}</td>
+		    	          <td>{{ rep.weight }}</td>
+		    	          <td>{{ rep.reps }}</td>
+		    	          <td>{{ rep.datetime }}</td>
+		    	        </tr>
+		    	      {% endfor %}
+		    	    </tbody>
+		    	  </table>
+		    </div>
+		    <div id="readings-graph">
+		    	<p class="mt-2">Readings Graph</p>
+		    	<canvas id="readingsChart" width="800" height="400"></canvas>
+		    </div>
+		    <div id="readings-table" width=800px>
+		    	<table id="reading-data" class="table table-striped">
+		    	    <thead>
+		    	      <tr>
+		    	        <th>ID</th>
+		    	        <th>Sensor1</th>
+		    	        <th>Sensor2</th>
+		    	        <th>Sensor3</th>
+		    	        <th>Sensor4</th>
+		    	        <th>Sensor5</th>
+		    	        <th>Sensor6</th>
+		    	        <th>Datetime</th>
+		    	      </tr>
+		    	    </thead>
+		    	    <tbody>
+		    	      {% for reading in readings %}
+		    	        <tr>
+		    	          <td>{{ reading.id }}</td>
+		    	          <td>{{ reading.sensor1 }}</td>
+		    	          <td>{{ reading.sensor2 }}</td>
+		    	          <td>{{ reading.sensor3 }}</td>
+		    	          <td>{{ reading.sensor4 }}</td>
+		    	          <td>{{ reading.sensor5 }}</td>
+		    	          <td>{{ reading.sensor6 }}</td>
+		    	          <td>{{ reading.datetime }}</td>
+		    	        </tr>
+		    	      {% endfor %}
+		    	    </tbody>
+		    	  </table>
+		    </div>
 		</div>
 	</section>
 {%endblock%}
@@ -104,6 +102,86 @@ $(document).ready(function () {
         $('#sidebar').toggleClass('active');
     });
 
+    //plot the graphs
+
+    var repChartData = {
+    	labels: [{%for rep in reps%}
+    	"{{rep.weight}}",
+    	{%endfor%}],
+    	  datasets: [{
+    	    label: 'Reps Completed',
+    	    backgroundColor: '#202529',
+    	    borderColor: '#202529',
+    	    hoverBackgroundColor: '#202529',
+    	    hoverBorderColor: '#202529',
+    	    data: [{%for rep in reps%}
+    				"{{rep.reps}}",
+    		{%endfor%}],
+    	    borderWidth: 1
+    	  }]
+    	};
+    var readingsChartData = {
+    	labels: [{%for reading in readings%}
+    	"{{reading.id}}",
+    	{%endfor%}],
+    	datasets: [
+    		{
+        		data: [{%for reading in readings%}"{{reading.sensor1}}",{%endfor%}],
+        		label: "Sensor1",
+        		borderColor: "#3e95cd",
+        		fill: false,
+        		lineTension: 0.2
+      		},
+      		{
+        		data: [{%for reading in readings%}"{{reading.sensor2}}",{%endfor%}],
+        		label: "Sensor2",
+        		borderColor: "#8e5ea2",
+        		fill: false,
+        		lineTension: 0.2
+      		},
+      		{
+        		data: [{%for reading in readings%}"{{reading.sensor3}}",{%endfor%}],
+        		label: "Sensor3",
+        		borderColor: "#3cba9f",
+        		fill: false,
+        		lineTension: 0.2
+      		}, 
+      		{
+        		data: [{%for reading in readings%}"{{reading.sensor4}}",{%endfor%}],
+        		label: "Sensor4",
+        		borderColor: "#e8c3b9",
+        		fill: false,
+        		lineTension: 0.2
+      		},
+      		{
+        		data: [{%for reading in readings%}"{{reading.sensor5}}",{%endfor%}],
+        		label: "Sensor5",
+        		borderColor: "#c45850",
+        		fill: false,
+        		lineTension: 0.2
+      		},
+      		{
+        		data: [{%for reading in readings%}"{{reading.sensor6}}",{%endfor%}],
+        		label: "Sensor6",
+        		borderColor: "#c45355",
+        		fill: false,
+        		lineTension: 0.2
+      		}
+      	]
+    	};
+
+    	// get chart canvas
+    	var repsctx = document.getElementById("repsChart").getContext("2d");
+    	var readingsctx = document.getElementById("readingsChart").getContext("2d");
+    	// create the chart using the chart canvas
+    	var repChart = new Chart(repsctx, {
+    	type: 'bar',
+    	data: repChartData,
+    	});
+    	var readingsChart = new Chart(readingsctx, {
+    	type: 'line',
+    	data: readingsChartData,
+    	});
 });
 </script>
 {% endblock %}

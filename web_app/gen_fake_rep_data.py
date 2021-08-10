@@ -4,7 +4,7 @@ from run import db,Patient,Rep,Reading
 
 def gen_fake_data(n):
 	for i in range(n):
-		rep = Rep(weight=randint(0,10),reps=randint(0,10),patients_id=Patient.query.first().patients_id)
+		rep = Rep(weight=randint(5,40),reps=randint(1,20),patients_id=Patient.query.first().patients_id)
 		reading = Reading(sensor1=randint(0,10),sensor2=randint(0,10),sensor3=randint(0,10),sensor4=randint(0,10),sensor5=randint(0,10),sensor6=randint(0,10),patients_id=Patient.query.first().patients_id)
 		db.session.add(rep)
 		db.session.add(reading)

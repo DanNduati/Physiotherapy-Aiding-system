@@ -68,7 +68,7 @@ def dash():
     patients = Patient.query.all()
     return render_template('dashboard.html',title='Dashboard',year=date.today().year,patients=patients)
 
-#patient data route 
+#dynamic patient data route
 @app.route("/dashboard/",methods=['GET'])
 def pdata():
     patient_id = request.args.get('id',default=None,type =int)
@@ -79,6 +79,7 @@ def pdata():
     reps = Rep.query.filter_by(patients_id=patient_id).order_by(Rep.datetime.desc())
     readings = Reading.query.filter_by(patients_id=patient_id).order_by(Reading.datetime.desc())
     return render_template("patient_data.html",patient=patient,reps=reps,readings=readings)
-#dynamic patient data route
+
+
 if __name__ == "__main__":
     app.run(debug=True)
