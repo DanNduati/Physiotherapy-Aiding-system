@@ -178,6 +178,12 @@ table.dataTable {
 	width: 100vw;
 }
 
+#repsChart{
+	max-height: 400px;
+}
+#readingsChart{
+	max-height: 400px;
+}
 /*footer*/
 footer{
 	height: 10vh;
