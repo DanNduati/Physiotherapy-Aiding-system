@@ -5,11 +5,12 @@
 		<h2>Welcome to the Dashboard</h2>
 		<p>Please select a patient to view their data.</p>
 		<div class="patient_cards">	
+			{%if patients%}
 			<div class="row row-cols-1 row-cols-md-2 g-4">
 				<!--loop through all patients in the database and display them as cards-->
 				{%for patient in patients%}
 				<div class="col">
-				    <div class="card text-center">
+				    <div class="card text-center shadow-lg p-3 mb-5 bg-white rounded">
 				      	<div class="card-body">
 				        	<h5 class="card-title">Patient Details</h5>
 				        	<ul class="list-group list-group-flush">
@@ -30,6 +31,11 @@
 				</div>
 				{%endfor%}
 			</div>
+			{%else%}
+				<div class="alert alert-danger text-center" role="alert">
+				  There are no patients currentlys signed up on the app!
+				</div>
+			{%endif%}
 		</div>
 	</div>
 </div>
