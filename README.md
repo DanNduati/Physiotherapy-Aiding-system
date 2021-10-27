@@ -35,7 +35,7 @@
 ### 2. Web app
 - No authentication justs serves data to the physiotherapist
 - Plot line graphs of weight and reps done for individual patients and displays tables of the same and data from the device
-### v1 - vanilla php(shit)
+### v1 - vanilla php(welp)
 | <img height="300" src="images/webapp/home_webapp.png"></img> | <img height="500" src="images/webapp/patient1_webapp.png"></img> |
 |:------------------------------------------------------------:|:----------------------------------------------------------------:|
 ### v2 - Flask [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://github.com/DanNduati/fsresp32/tree/main/web_app)
